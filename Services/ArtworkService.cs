@@ -6,6 +6,7 @@ namespace HeistPlanner.Services
 {
     public class ArtworkService
     {
+        //---------Ref: AIC API docs for search endpoint, fields and limit parameters: https://api.artic.edu/docs/
         public static readonly string ARTWORK_SEARCH_URL = "https://api.artic.edu/api/v1/artworks/search";
         public static readonly string ARTWORK_FIELDS =
             "id,title,artist_title,date_display,medium_display,place_of_origin,dimensions,department_title,image_id";

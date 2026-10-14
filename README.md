@@ -12,4 +12,9 @@ D00265675
 - [Open-Meteo](https://open-meteo.com/): weather on the night
 
 ## References
-will be added as the project grows)
+will be added as the project grows
+
+- [Art Institute of Chicago API documentation](https://api.artic.edu/docs/) – search, fields, IIIF images
+- [Microsoft: Guidelines for overriding Equals() and operator ==](https://learn.microsoft.com/en-us/previous-versions/ms173147(v=vs.90))
+- [Newtonsoft.Json: JsonProperty attribute](https://www.newtonsoft.com/json/help/html/JsonPropertyName.htm)
+- [Microsoft: How to create user-defined exceptions](https://learn.microsoft.com/en-us/dotnet/standard/exceptions/how-to-create-user-defined-exceptions)

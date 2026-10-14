@@ -14,6 +14,7 @@ namespace HeistPlanner.Models
         private string? departmentTitle;
         private string? imageId;
 
+        //-----Ref: newtonsoft JsonProperty maps the API's snake_case names https://www.newtonsoft.com/json/help/html/JsonPropertyName.htm
         [JsonProperty("id")]
         public int Id { get { return id; } set { id = value; } }
 
@@ -46,6 +47,7 @@ namespace HeistPlanner.Models
             get { return string.IsNullOrWhiteSpace(artistTitle) ? "Unknown artist" : artistTitle; }
         }
 
+        //--------Ref: AIC IIIF image URL format: https://api.artic.edu/docs/#images
         public string ImageUrl
         {
             get { return imageId == null ? "" : $"https://www.artic.edu/iiif/2/{imageId}/full/843,/0/default.jpg"; }
@@ -79,7 +81,9 @@ namespace HeistPlanner.Models
             var other = (Artwork)obj;
             return other.id == id;
         }
-
+        //-------Ref: Microsoft guidelines for overloading == safely, https://learn.microsoft.com/en-us/previous-versions/ms173147(v=vs.90)
+        //-------I need this so == compares artworks by ID instead of by memory ref, and so it doesn't crash
+        //-------when the left side is null e.g. checking if an artwork is already on the target list
         public static bool operator ==(Artwork? left, Artwork? right)
         {
             if (left is null) return right is null;
