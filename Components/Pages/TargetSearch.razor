@@ -1,0 +1,42 @@
+﻿<h3>Scout the targets</h3>
+
+<input placeholder="Search artwrks..." @bind="searchText"/>
+<button @onclick="Search">Search</button>
+
+@if (errorMessage != null)
+{
+    <p class="text-danger">@errorMessage</p>
+}
+
+<ul>
+    @foreach (var artwork in artworks)
+    {
+        <li>@artwork.ToString()</li>
+    }
+</ul>
+
+@code {
+    private string? searchText;
+    private string? errorMessage;
+    private List<Artwork> artworks = new();
+
+    private void Search()
+    {
+        errorMessage = null;
+        if (string.IsNullOrWhiteSpace(searchText))
+        {
+            errorMessage = "Type something to search for.";
+            return;
+        }
+
+        try
+        {
+            artworks = ArtworkService.SearchArtworks(searchText);
+            artworks.Sort();
+        }
+        catch (ApiException ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+}
