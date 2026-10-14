@@ -4,7 +4,7 @@ A Blazor web app for planning a (fictional) art heist. Scout real artworks,
 recruit a crew, check the darkness and weather on the night, then run the job.
 
 SD4 Service Oriented Architecture: CA1, DkIT 2026/27
-
+D00265675
 ## Web services used
 - [Art Institute of Chicago API](https://api.artic.edu/docs/): artworks and images
 - [RandomUser](https://randomuser.me/): crew candidates
