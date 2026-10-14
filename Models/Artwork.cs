@@ -2,7 +2,7 @@
 
 namespace HeistPlanner.Models
 {
-    public class Artwork
+    public class Artwork : IComparable<Artwork>
     {
         private int id;
         private string title = "";
@@ -13,7 +13,7 @@ namespace HeistPlanner.Models
         private string? dimensions;
         private string? departmentTitle;
         private string? imageId;
-        
+
         [JsonProperty("id")]
         public int Id { get { return id; } set { id = value; } }
 
@@ -53,7 +53,6 @@ namespace HeistPlanner.Models
 
         public Artwork()
         {
-            //Needed so Newtonsoft can create the object when deserializing
             id = 0;
             title = "Untitled";
         }
@@ -68,6 +67,45 @@ namespace HeistPlanner.Models
         public override string ToString()
         {
             return $"{title} by {Artist} ({dateDisplay})";
+        }
+
+        public override bool Equals(object? obj)
+        {
+            if (!(obj is Artwork))
+            {
+                return false;
+            }
+
+            var other = (Artwork)obj;
+            return other.id == id;
+        }
+
+        public static bool operator ==(Artwork? left, Artwork? right)
+        {
+            if (left is null) return right is null;
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Artwork? left, Artwork? right)
+        {
+            return !(left == right);
+        }
+
+        public override int GetHashCode()
+        {
+            return id.GetHashCode();
+        }
+
+        public int CompareTo(Artwork? other)
+        {
+            if (other is null) return 1;
+
+            int result = string.Compare(title, other.title, ignoreCase: true);
+            if (result == 0)
+            {
+                result = string.Compare(Artist, other.Artist, ignoreCase: true);
+            }
+            return result;
         }
     }
 }
