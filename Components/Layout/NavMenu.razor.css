@@ -95,11 +95,30 @@
     }
 
     .nav-scrollable {
-        /* Never collapse the sidebar for wide screens */
         display: block;
 
-        /* Allow sidebar to scroll for tall menus */
         height: calc(100vh - 3.5rem);
         overflow-y: auto;
     }
 }
+
+.heist-brand {
+    font-weight: 900;
+    font-stretch: 70%;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--heist-text);
+}
+
+.step-number {
+    font-family: var(--heist-mono);
+    color: var(--heist-accent);
+    margin-right: 0.75rem;
+}
+
+.nav-item ::deep a.active {
+    background-color: var(--heist-accent);
+    color: #0E1013;
+}
+
+

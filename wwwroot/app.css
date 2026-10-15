@@ -1,3 +1,32 @@
+
+
+:root {
+    --heist-bg: #0E1013;
+    --heist-panel: #171A1F;
+    --heist-line: #2A2F37;
+    --heist-text: #ECE7DD;
+    --heist-muted: #9AA1AB;
+    --heist-accent: #e23de8;
+    --heist-good: #7FC8BE;
+    --heist-bad: #F08A6E;
+    --heist-font: 'Archivo', sans-serif;
+    --heist-mono: 'IBM Plex Mono', monospace;
+}
+
+body {
+    background-color: var(--heist-bg);
+    color: var(--heist-text);
+    font-family: var(--heist-font);
+}
+
+h1, h2, h3 {
+    font-weight: 900;
+    font-stretch: 75%;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
