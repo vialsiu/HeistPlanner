@@ -6,24 +6,24 @@ namespace HeistPlanner.Services
 {
     public class ArtworkService
     {
-        //---------Ref: AIC API docs for search endpoint, fields and limit parameters: https://api.artic.edu/docs/
-        public static readonly string ARTWORK_SEARCH_URL = "https://api.artic.edu/api/v1/artworks/search";
+        //---- Ref: Cleveland Museum of Art Open Access API docs: https://openaccess-api.clevelandart.org/
+        public static readonly string ARTWORK_SEARCH_URL = "https://openaccess-api.clevelandart.org/api/artworks/";
         public static readonly string ARTWORK_FIELDS =
-            "id,title,artist_title,date_display,medium_display,place_of_origin,dimensions,department_title,image_id";
-
+            "id,title,creation_date,technique,department,culture,measurements,creators,images";
         public static List<Artwork> SearchArtworks(string searchText)
         {
             var client = new RestClient(ARTWORK_SEARCH_URL);
             var request = new RestRequest();
 
             request.AddParameter("q", searchText);
+            request.AddParameter("has_image", 1);
             request.AddParameter("fields", ARTWORK_FIELDS);
             request.AddParameter("limit", 12);
             var response = client.Execute(request);
 
             if (!response.IsSuccessful || string.IsNullOrWhiteSpace(response.Content))
             {
-                throw new ApiException($"Couldn't reach the Art Institute (status {(int)response.StatusCode}). Try again later.");
+                throw new ApiException($"Couldn't reach the museum collection (status {(int)response.StatusCode}). Try again later.");            
             }
 
             return ParseArtworks(response.Content);

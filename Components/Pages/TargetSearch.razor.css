@@ -1,0 +1,56 @@
+﻿.artwork-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.artwork-card {
+    background: var(--heist-panel);
+    border: 1px solid var(--heist-line);
+    display: flex;
+    flex-direction: column;
+}
+
+.artwork-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.no-image {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #23272E;
+    color: var(--heist-muted);
+    font-family: var(--heist-mono);
+    font-size: 0.75rem;
+}
+
+.artwork-info {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.artwork-info h5 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.artwork-info p {
+    margin: 0;
+    color: var(--heist-muted);
+    font-size: 0.85rem;
+}
+
+.small-text {
+    color: var(--heist-muted);
+    font-family: var(--heist-mono);
+    font-size: 0.75rem;
+}
