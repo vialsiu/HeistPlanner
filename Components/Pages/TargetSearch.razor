@@ -1,6 +1,6 @@
 ﻿<h3>Scout the targets</h3>
 
-<input placeholder="Search artwrks..." @bind="searchText"/>
+<input placeholder="Search artworks..." @bind="searchText"/>
 <button @onclick="Search">Search</button>
 
 @if (errorMessage != null)
@@ -8,17 +8,35 @@
     <p class="text-danger">@errorMessage</p>
 }
 
-<ul>
+<div class="artwork-grid">
     @foreach (var artwork in artworks)
     {
-        <li>@artwork.ToString()</li>
+        <div class="artwork-card">
+            @if (artwork.ImageUrl != "" && !failedImages.Contains(artwork.Id))
+            {
+                @* Ref: Blazor @onerror event - https://learn.microsoft.com/en-us/aspnet/core/blazor/components/event-handling *@
+                <img src="@artwork.ImageUrl" alt="@artwork.Title" @onerror="() => ImageFailed(artwork)"/>
+            }
+            else
+            {
+                //-- when there's no image
+                <div class="no-image">No image available</div>
+            }
+            <div class="artwork-info">
+                <h5>@artwork.Title</h5>
+                <p>@artwork.Artist · @artwork.DateDisplay</p>
+                <p class="small-text">@artwork.Dimensions</p>
+            </div>
+        </div>
     }
-</ul>
+</div>
 
 @code {
     private string? searchText;
     private string? errorMessage;
     private List<Artwork> artworks = new();
+
+    private List<int> failedImages = new();
 
     private void Search()
     {
@@ -37,6 +55,14 @@
         catch (ApiException ex)
         {
             errorMessage = ex.Message;
+        }
+    }
+
+    private void ImageFailed(Artwork artwork)
+    {
+        if (!failedImages.Contains(artwork.Id))
+        {
+            failedImages.Add(artwork.Id);
         }
     }
 }
