@@ -54,3 +54,61 @@
     font-family: var(--heist-mono);
     font-size: 0.75rem;
 }
+
+.layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-start;
+    margin-top: 1rem;
+}
+
+.layout .artwork-grid {
+    flex: 3 1 500px;
+    margin-top: 0;
+}
+
+.target-list {
+    flex: 1 1 250px;
+    background: var(--heist-panel);
+    border: 1px solid var(--heist-line);
+    padding: 1rem;
+}
+
+.target-list h4 {
+    font-weight: 900;
+    font-stretch: 75%;
+    text-transform: uppercase;
+}
+
+.target-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.target-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed var(--heist-line);
+}
+
+.target-warning {
+    color: var(--heist-accent);
+    font-size: 0.9rem;
+}
+
+.target-toggle .remove-hint {
+    display: none;
+}
+
+.target-toggle:hover .on-list {
+    display: none;
+}
+
+.target-toggle:hover .remove-hint {
+    display: inline;
+}

@@ -13,36 +13,68 @@
     <p>No artworks found for "@lastSearch". Try another artist or keyword.</p>
 }
 
+@* The layout puts the artwork grid on the left and the target list panel on the right *@
+<div class="layout">
 
-<div class="artwork-grid">
-    @foreach (var artwork in artworks)
-    {
-        <div class="artwork-card">
-            @if (artwork.ImageUrl != "" && !failedImages.Contains(artwork.Id))
-            {
-                @* Ref: Blazor @onerror event - https://learn.microsoft.com/en-us/aspnet/core/blazor/components/event-handling *@
-                <img src="@artwork.ImageUrl" alt="@artwork.Title" @onerror="() => ImageFailed(artwork)"/>
-            }
-            else
-            {
-                //-- when there's no image
-                <div class="no-image">No image available</div>
-            }
-            <div class="artwork-info">
-                <h5>@artwork.Title</h5>
-                <p>@artwork.Artist · @artwork.DateDisplay</p>
-                <p class="small-text">@artwork.Dimensions</p>
-                @if (targets.Contains(artwork))
+    <div class="artwork-grid">
+        @foreach (var artwork in artworks)
+        {
+            <div class="artwork-card">
+                @if (artwork.ImageUrl != "" && !failedImages.Contains(artwork.Id))
                 {
-                    <button class="btn btn-sm btn-outline-warning mt-auto" disabled>✓ On target list</button>
+                    @* Ref: Blazor @onerror event - https://learn.microsoft.com/en-us/aspnet/core/blazor/components/event-handling *@
+                    <img src="@artwork.ImageUrl" alt="@artwork.Title" @onerror="() => ImageFailed(artwork)"/>
                 }
                 else
                 {
-                    <button class="btn btn-sm btn-warning mt-auto" @onclick="() => AddTarget(artwork)">Add to target list</button>
+                    //-- when there's no image
+                    <div class="no-image">No image available</div>
                 }
+                <div class="artwork-info">
+                    <h5>@artwork.Title</h5>
+                    <p>@artwork.Artist · @artwork.DateDisplay</p>
+                    <p class="small-text">@artwork.Dimensions</p>
+                    @if (targets.Contains(artwork))
+                    {
+                        //-- clicking again removes it, the button works as a toggle
+                        <button class="btn btn-sm btn-outline-warning mt-auto target-toggle" @onclick="() => RemoveTarget(artwork)">
+                            <span class="on-list">✓ On target list</span>
+                            <span class="remove-hint">✕ Remove target</span>
+                        </button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-sm btn-warning mt-auto" @onclick="() => AddTarget(artwork)">Add to target list</button>
+                    }
+                </div>
             </div>
-        </div>
-    }
+        }
+    </div>
+
+    <div class="target-list">
+        <h4>Target list (@targets.Count/@MAX_TARGETS)</h4>
+
+        @if (targetMessage != null)
+        {
+            <p class="target-warning">@targetMessage</p>
+        }
+
+        @if (targets.Count == 0)
+        {
+            <p class="small-text">No targets yet. Add up to @MAX_TARGETS artworks.</p>
+        }
+
+        <ul>
+            @foreach (var target in targets)
+            {
+                <li>
+                    <span>@target.Title</span>
+                    <button class="btn btn-sm btn-outline-light" @onclick="() => RemoveTarget(target)">Remove</button>
+                </li>
+            }
+        </ul>
+    </div>
+
 </div>
 
 @code {
@@ -104,6 +136,12 @@
         }
 
         targets.Add(artwork);
+    }
+    
+    private void RemoveTarget(Artwork artwork)
+    {
+        targets.Remove(artwork);
+        targetMessage = null;
     }
 }
 
