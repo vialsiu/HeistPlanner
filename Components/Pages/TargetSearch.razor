@@ -8,6 +8,12 @@
     <p class="text-danger">@errorMessage</p>
 }
 
+@if (hasSearched && errorMessage == null && artworks.Count == 0)
+{
+    <p>No artworks found for "@lastSearch". Try another artist or keyword.</p>
+}
+
+
 <div class="artwork-grid">
     @foreach (var artwork in artworks)
     {
@@ -35,12 +41,15 @@
     private string? searchText;
     private string? errorMessage;
     private List<Artwork> artworks = new();
-
+    private bool hasSearched = false;
+    private string? lastSearch;
     private List<int> failedImages = new();
 
     private void Search()
     {
         errorMessage = null;
+        hasSearched = true;
+        lastSearch = searchText;
         if (string.IsNullOrWhiteSpace(searchText))
         {
             errorMessage = "Type something to search for.";
