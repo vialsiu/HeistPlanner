@@ -32,6 +32,14 @@
                 <h5>@artwork.Title</h5>
                 <p>@artwork.Artist · @artwork.DateDisplay</p>
                 <p class="small-text">@artwork.Dimensions</p>
+                @if (targets.Contains(artwork))
+                {
+                    <button class="btn btn-sm btn-outline-warning mt-auto" disabled>✓ On target list</button>
+                }
+                else
+                {
+                    <button class="btn btn-sm btn-warning mt-auto" @onclick="() => AddTarget(artwork)">Add to target list</button>
+                }
             </div>
         </div>
     }
@@ -44,7 +52,11 @@
     private bool hasSearched = false;
     private string? lastSearch;
     private List<int> failedImages = new();
-
+    private List<Artwork> targets = new();
+    private string? targetMessage;
+    private const int MAX_TARGETS = 3;  //--a small crew can only carry so much
+    
+    
     private void Search()
     {
         errorMessage = null;
@@ -74,4 +86,24 @@
             failedImages.Add(artwork.Id);
         }
     }
+    private void AddTarget(Artwork artwork)
+    {
+        targetMessage = null;
+
+        //Contains() uses our overridden Equals, so the same painting can't be added twice
+        if (targets.Contains(artwork))
+        {
+            targetMessage = $"{artwork.Title} is already on your target list.";
+            return;
+        }
+
+        if (targets.Count >= MAX_TARGETS)
+        {
+            targetMessage = $"Your crew can only carry {MAX_TARGETS} pieces. Remove one first.";
+            return;
+        }
+
+        targets.Add(artwork);
+    }
 }
+
