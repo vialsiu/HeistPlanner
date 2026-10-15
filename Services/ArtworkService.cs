@@ -6,7 +6,7 @@ namespace HeistPlanner.Services
 {
     public class ArtworkService
     {
-        //---------Ref: AIC API docs for search endpoint, fields and limit parameters: https://api.artic.edu/docs/
+        //---- Ref: Cleveland Museum of Art Open Access API docs: https://openaccess-api.clevelandart.org/
         public static readonly string ARTWORK_SEARCH_URL = "https://openaccess-api.clevelandart.org/api/artworks/";
         public static readonly string ARTWORK_FIELDS =
             "id,title,creation_date,technique,department,culture,measurements,creators,images";
@@ -23,7 +23,7 @@ namespace HeistPlanner.Services
 
             if (!response.IsSuccessful || string.IsNullOrWhiteSpace(response.Content))
             {
-                throw new ApiException($"Couldn't reach the Art Institute (status {(int)response.StatusCode}). Try again later.");
+                throw new ApiException($"Couldn't reach the museum collection (status {(int)response.StatusCode}). Try again later.");            
             }
 
             return ParseArtworks(response.Content);
