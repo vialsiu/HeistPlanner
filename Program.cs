@@ -1,18 +1,21 @@
 using HeistPlanner.Components;
+using HeistPlanner.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+//---add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+//---blazor dependency injection, scoped services and @inject https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection
+//-----each user's browser tab gets 1 HeistPlan
+builder.Services.AddScoped<HeistPlan>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

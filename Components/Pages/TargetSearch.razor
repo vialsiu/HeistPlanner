@@ -1,4 +1,7 @@
-﻿<h3>Scout the targets</h3>
+﻿@* -----reference @inject gives this component the shared HeistPlan https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection *@
+@inject HeistPlan Plan
+
+<h3>Scout the targets</h3>
 
 <input placeholder="Search artworks..." @bind="searchText"/>
 <button @onclick="Search">Search</button>
@@ -13,7 +16,7 @@
     <p>No artworks found for "@lastSearch". Try another artist or keyword.</p>
 }
 
-@* The layout puts the artwork grid on the left and the target list panel on the right *@
+@*----the layout puts the artwork grid on the left and the target list panel on the right *@
 <div class="layout">
 
     <div class="artwork-grid">
@@ -22,7 +25,7 @@
             <div class="artwork-card">
                 @if (artwork.ImageUrl != "" && !failedImages.Contains(artwork.Id))
                 {
-                    @* Ref: Blazor @onerror event - https://learn.microsoft.com/en-us/aspnet/core/blazor/components/event-handling *@
+                    @*----reference for blazor @onerror event https://learn.microsoft.com/en-us/aspnet/core/blazor/components/event-handling *@
                     <img src="@artwork.ImageUrl" alt="@artwork.Title" @onerror="() => ImageFailed(artwork)"/>
                 }
                 else
@@ -34,9 +37,9 @@
                     <h5>@artwork.Title</h5>
                     <p>@artwork.Artist · @artwork.DateDisplay</p>
                     <p class="small-text">@artwork.Dimensions</p>
-                    @if (targets.Contains(artwork))
+                    @if (Plan.IsTarget(artwork))
                     {
-                        //-- clicking again removes it, the button works as a toggle
+                        //--- clicking again removes it, the button works as a toggle
                         <button class="btn btn-sm btn-outline-warning mt-auto target-toggle" @onclick="() => RemoveTarget(artwork)">
                             <span class="on-list">✓ On target list</span>
                             <span class="remove-hint">✕ Remove target</span>
@@ -52,20 +55,20 @@
     </div>
 
     <div class="target-list">
-        <h4>Target list (@targets.Count/@MAX_TARGETS)</h4>
+        <h4>Target list (@Plan.Targets.Count/@HeistPlan.MAX_TARGETS)</h4>
 
         @if (targetMessage != null)
         {
             <p class="target-warning">@targetMessage</p>
         }
 
-        @if (targets.Count == 0)
+        @if (Plan.Targets.Count == 0)
         {
-            <p class="small-text">No targets yet. Add up to @MAX_TARGETS artworks.</p>
+            <p class="small-text">No targets yet. Add up to @HeistPlan.MAX_TARGETS artworks.</p>
         }
 
         <ul>
-            @foreach (var target in targets)
+            @foreach (var target in Plan.Targets)
             {
                 <li>
                     <span>@target.Title</span>
@@ -84,11 +87,8 @@
     private bool hasSearched = false;
     private string? lastSearch;
     private List<int> failedImages = new();
-    private List<Artwork> targets = new();
     private string? targetMessage;
-    private const int MAX_TARGETS = 3;  //--a small crew can only carry so much
-    
-    
+
     private void Search()
     {
         errorMessage = null;
@@ -118,30 +118,16 @@
             failedImages.Add(artwork.Id);
         }
     }
+
+    //---the rules now live in HeistPlan the page just shows the message it gets back
     private void AddTarget(Artwork artwork)
     {
-        targetMessage = null;
-
-        //Contains() uses our overridden Equals, so the same painting can't be added twice
-        if (targets.Contains(artwork))
-        {
-            targetMessage = $"{artwork.Title} is already on your target list.";
-            return;
-        }
-
-        if (targets.Count >= MAX_TARGETS)
-        {
-            targetMessage = $"Your crew can only carry {MAX_TARGETS} pieces. Remove one first.";
-            return;
-        }
-
-        targets.Add(artwork);
+        targetMessage = Plan.AddTarget(artwork);
     }
-    
+
     private void RemoveTarget(Artwork artwork)
     {
-        targets.Remove(artwork);
+        Plan.RemoveTarget(artwork);
         targetMessage = null;
     }
 }
-
