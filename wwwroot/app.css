@@ -321,3 +321,8 @@ h1:focus {
         position: static;
     }
 }
+
+/*--- for the painting behind the crew page title*/
+.hero-crew {
+    background-image: url('images/crew-hero.jpg');
+}

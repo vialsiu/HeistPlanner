@@ -4,110 +4,166 @@
 
 <PageTitle>Crew - Heist Planner</PageTitle>
 
-<h1>Recruit the crew</h1>
-<p class="intro">Five roles, one person each. Every specialist makes the job safer, but everyone takes a cut of the loot.</p>
+@* ---painting band at the top, same as the targets page (styles in app.css) *@
+<section class="hero hero-tall hero-crew">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <p class="hero-eyebrow">Recruitment</p>
+        <h1>Assemble<br/>the<br/>Crew</h1>
+        <a href="#crew" class="hero-link">Five roles, one specialist each</a>
+    </div>
+</section>
 
-<h3 class="section-label">Your crew · @Plan.Crew.Count / @roles.Length hired · they take @Plan.GetTotalCutPercentage()% of the loot</h3>
+@* ---3 columns: steps on the left, crew and candidates in the middle, payroll on the right *@
+<div class="page-layout">
 
-<div class="crew-grid">
-    @foreach (CrewRole role in roles)
-    {
-        CrewMember? member = Plan.GetCrewMember(role);
-        if (member != null)
-        {
-            <div class="crew-card hired">
-                <span class="role-label">@CrewMember.GetRoleName(role)</span>
-                <div class="person">
-                    <img src="@member.PhotoUrl" alt="@member.Name"/>
-                    <div>
-                        <strong>@member.Name</strong><br/>
-                        <span class="small-text">@member.Country · @member.Age</span>
+    <aside class="side-col steps-col">
+        <StepsPanel/>
+    </aside>
+
+    <section class="crew-main" id="crew">
+        <div class="section-header">
+            <h2>Your crew</h2>
+            <p class="section-count">@Plan.Crew.Count of @roles.Length seats filled</p>
+        </div>
+
+        <div class="crew-grid">
+            @foreach (CrewRole role in roles)
+            {
+                CrewMember? member = Plan.GetCrewMember(role);
+                if (member != null)
+                {
+                    <div class="crew-card hired">
+                        <span class="role-label">@CrewMember.GetRoleName(role)</span>
+                        <div class="person">
+                            <img src="@member.PhotoUrl" alt="@member.Name"/>
+                            <div>
+                                <span class="person-name">@member.Name</span>
+                                <span class="small-text">@member.Country · @member.Age</span>
+                            </div>
+                        </div>
+                        <div class="skill-row">
+                            <span>Skill</span>
+                            <span>@member.Skill</span>
+                        </div>
+                        <div class="skill-bar">
+                            @* ----ref @( ) explicit razor expression so the number goes right before the % https://learn.microsoft.com/en-us/aspnet/core/mvc/views/razor#explicit-razor-expressions *@
+                            <div style="width: @(member.Skill)%"></div>
+                        </div>
+                        <p class="perk">@member.Perk</p>
+                        <p class="small-text">Takes @member.GetCutPercentage()% of the loot</p>
+                        <button class="btn-heist-outline fire-btn" @onclick="() => Fire(role)">Fire</button>
                     </div>
-                </div>
-                <div class="skill-row">
-                    <span>Skill</span>
-                    <span>@member.Skill</span>
-                </div>
-                <div class="skill-bar">
-                    @* ----ref @( ) explicit razor expression so the number goes right before the % https://learn.microsoft.com/en-us/aspnet/core/mvc/views/razor#explicit-razor-expressions *@
-                    <div style="width: @(member.Skill)%"></div>
-                </div>
-                <p class="small-text">@member.Perk</p>
-                <p class="small-text">Takes @member.GetCutPercentage()% of the loot</p>
-                <button class="btn btn-sm btn-outline-light mt-auto" @onclick="() => Fire(role)">Fire</button>
-            </div>
-        }
-        else
-        {
-            <div class="crew-card empty">
-                <span class="role-label">@CrewMember.GetRoleName(role)</span>
-                <strong>Seat empty</strong>
-                <span class="small-text">Hire someone from the candidates below</span>
-            </div>
-        }
-    }
-</div>
+                }
+                else
+                {
+                    <div class="crew-card empty">
+                        <span class="role-label">@CrewMember.GetRoleName(role)</span>
+                        <span class="empty-title">Seat empty</span>
+                        <span class="small-text">Hire someone from the candidates below</span>
+                    </div>
+                }
+            }
+        </div>
 
-<div class="candidates-header">
-    <h3 class="section-label">Candidates for hire</h3>
-    <div class="hire-controls">
-        <label>
-            Hire as
-            @* ----ref @bind on a select, the dropdown value goes straight into selectedRole https://learn.microsoft.com/en-us/aspnet/core/blazor/components/data-binding *@
-            <select @bind="selectedRole">
+        <div class="section-header candidates-header">
+            <h2>Candidates for hire</h2>
+            <div class="hire-controls">
+                <label for="hire-role">Hire as</label>
+                @* ----ref @bind on a select, the dropdown value goes straight into selectedRole https://learn.microsoft.com/en-us/aspnet/core/blazor/components/data-binding *@
+                <select id="hire-role" @bind="selectedRole">
+                    @foreach (CrewRole role in roles)
+                    {
+                        <option value="@role">@CrewMember.GetRoleName(role)</option>
+                    }
+                </select>
+                <button class="btn-heist-outline" @onclick="LoadCandidates">New candidates</button>
+            </div>
+        </div>
+
+        @if (hireMessage != null)
+        {
+            <p class="hire-message">@hireMessage</p>
+        }
+
+        @if (errorMessage != null)
+        {
+            <p class="text-danger">@errorMessage</p>
+        }
+
+        @if (errorMessage == null && candidates.Count == 0)
+        {
+            <p class="small-text">No candidates left. Click "New candidates" to get more.</p>
+        }
+
+        @* ---the table scrolls sideways on small screens instead of squashing *@
+        <div class="table-wrap">
+            <table class="candidates">
+                <thead>
+                    <tr>
+                        <th>Candidate</th>
+                        <th>Country</th>
+                        <th>Age</th>
+                        <th>Rated skill</th>
+                        <th><span class="visually-hidden">Hire</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var person in candidates)
+                    {
+                        <tr>
+                            <td>
+                                <div class="candidate-name">
+                                    <img src="@person.picture.large" alt=""/>
+                                    <span>@person.name.first @person.name.last</span>
+                                </div>
+                            </td>
+                            <td>@person.location.country</td>
+                            <td>@person.dob.age</td>
+                            <td class="skill-cell">@person.skill</td>
+                            <td class="hire-cell">
+                                <button class="btn-heist" @onclick="() => Hire(person)">Hire</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    @* ---right column: who gets paid what *@
+    <aside class="side-col">
+        <div class="payroll">
+            <p class="payroll-eyebrow">The payroll</p>
+            <h2>The Crew</h2>
+            <p class="payroll-count">@Plan.Crew.Count of @roles.Length hired</p>
+
+            <ul>
                 @foreach (CrewRole role in roles)
                 {
-                    <option value="@role">@CrewMember.GetRoleName(role)</option>
+                    CrewMember? member = Plan.GetCrewMember(role);
+                    <li>
+                        <span class="payroll-role">@CrewMember.GetRoleName(role)</span>
+                        <span class="payroll-name">@(member != null ? member.Name : "Not hired")</span>
+                        <span class="payroll-cut">@(member != null ? member.GetCutPercentage() + "%" : "")</span>
+                    </li>
                 }
-            </select>
-        </label>
-        <button class="btn btn-sm btn-outline-warning" @onclick="LoadCandidates">↻ New candidates</button>
-    </div>
+            </ul>
+
+            <div class="payroll-total">
+                <span>Crew's cut</span>
+                <strong>@Plan.GetTotalCutPercentage()%</strong>
+            </div>
+            <div class="payroll-total">
+                <span>Your share</span>
+                <strong>@(100 - Plan.GetTotalCutPercentage())%</strong>
+            </div>
+
+            <a href="" class="btn-heist-outline next-link">← Back to the targets</a>
+        </div>
+    </aside>
+
 </div>
-
-@if (hireMessage != null)
-{
-    <p class="hire-message">@hireMessage</p>
-}
-
-@if (errorMessage != null)
-{
-    <p class="text-danger">@errorMessage</p>
-}
-
-@if (errorMessage == null && candidates.Count == 0)
-{
-    <p class="small-text">No candidates left. Click "New candidates" to get more.</p>
-}
-
-<table class="candidates">
-    <thead>
-        <tr>
-            <th>Candidate</th>
-            <th>Country</th>
-            <th>Age</th>
-            <th>Rated skill</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var person in candidates)
-        {
-            <tr>
-                <td class="candidate-name">
-                    <img src="@person.picture.large" alt=""/>
-                    @person.name.first @person.name.last
-                </td>
-                <td>@person.location.country</td>
-                <td>@person.dob.age</td>
-                <td>@person.skill</td>
-                <td>
-                    <button class="btn btn-sm btn-warning" @onclick="() => Hire(person)">Hire</button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
 @code {
     //----ref Enum.GetValues gives back every value in the enum so we can loop through all 5 roles https://learn.microsoft.com/en-us/dotnet/api/system.enum.getvalues
