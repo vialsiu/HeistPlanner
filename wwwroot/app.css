@@ -286,3 +286,38 @@ h1:focus {
         padding-top: 110px;
     }
 }
+
+
+.page-layout {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) minmax(0, 3fr) minmax(260px, 1.3fr);
+    gap: 2rem;
+    align-items: start;
+}
+
+.side-col {
+    position: sticky;
+    top: 1.5rem;
+}
+
+/*---medium screens: hide the steps panel*/
+@media (max-width: 1099.98px) {
+    .page-layout {
+        grid-template-columns: minmax(0, 3fr) minmax(250px, 1.3fr);
+    }
+
+    .steps-col {
+        display: none;
+    }
+}
+
+/*---phones to have one column*/
+@media (max-width: 767.98px) {
+    .page-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .side-col {
+        position: static;
+    }
+}

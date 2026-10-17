@@ -1,14 +1,4 @@
-﻿.targets-layout {
-    display: grid;
-    grid-template-columns: minmax(180px, 1fr) minmax(0, 3fr) minmax(260px, 1.3fr);
-    gap: 2rem;
-    align-items: start;
-}
-
-.steps-col, .list-col {
-    position: sticky;
-    top: 1.5rem;
-}
+﻿
 
 .search-bar label {
     display: block;
@@ -255,20 +245,6 @@
     text-decoration: none;
 }
 
-@media (max-width: 1099.98px) {
-    .targets-layout {
-        grid-template-columns: minmax(0, 3fr) minmax(250px, 1.3fr);
-    }
-
-    .steps-col {
-        display: none;
-    }
-}
-
-@media (max-width: 767.98px) {
-    .targets-layout {
-        grid-template-columns: 1fr;
-    }
 
     .list-col {
         position: static;
