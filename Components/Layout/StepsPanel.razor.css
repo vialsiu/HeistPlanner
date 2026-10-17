@@ -1,0 +1,60 @@
+﻿.steps-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.steps-eyebrow {
+    margin: 0 0 0.5rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--heist-muted);
+}
+
+/*----ref ::deep so the styles reach the <a> rendered by NavLink - https://learn.microsoft.com/en-us/aspnet/core/blazor/components/css-isolation#child-component-support */
+.steps-panel ::deep .step {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    padding: 0.7rem 0.75rem;
+    text-decoration: none;
+    color: var(--heist-text);
+    border-left: 2px solid transparent;
+}
+
+.steps-panel ::deep a.step:hover {
+    background: var(--heist-panel);
+}
+
+.steps-panel ::deep a.step.active {
+    background: var(--heist-panel);
+    border-left-color: var(--heist-rose);
+}
+
+.step-num {
+    font-family: var(--heist-serif);
+    color: var(--heist-rose);
+    font-size: 1.05rem;
+    min-width: 1.6rem;
+}
+
+.step-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.step-name {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.step-hint {
+    font-size: 0.8rem;
+    color: var(--heist-muted);
+}
+
+.upcoming .step-name {
+    font-weight: 400;
+    color: var(--heist-muted);
+}

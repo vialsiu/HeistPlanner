@@ -1,0 +1,45 @@
+﻿@* ---left side panel on the pages, lists every step of the heist so you can jump between them *@
+<nav class="steps-panel" aria-label="Heist steps">
+    <p class="steps-eyebrow">The plan</p>
+
+    <NavLink class="step" href="" Match="NavLinkMatch.All">
+        <span class="step-num">I</span>
+        <span class="step-text">
+            <span class="step-name">Targets</span>
+            <span class="step-hint">Choose up to three pieces</span>
+        </span>
+    </NavLink>
+
+    <NavLink class="step" href="crew">
+        <span class="step-num">II</span>
+        <span class="step-text">
+            <span class="step-name">Crew</span>
+            <span class="step-hint">Hire a specialist for each role</span>
+        </span>
+    </NavLink>
+
+    @* ---next steps arent built yet so they're plain text for now, they become links when the pages exist *@
+    <span class="step upcoming">
+        <span class="step-num">III</span>
+        <span class="step-text">
+            <span class="step-name">The Night</span>
+            <span class="step-hint">Coming up</span>
+        </span>
+    </span>
+
+    <span class="step upcoming">
+        <span class="step-num">IV</span>
+        <span class="step-text">
+            <span class="step-name">Simulate</span>
+            <span class="step-hint">Coming up</span>
+        </span>
+    </span>
+
+    <span class="step upcoming">
+        <span class="step-num">V</span>
+        <span class="step-text">
+            <span class="step-name">History</span>
+            <span class="step-hint">Coming up</span>
+        </span>
+    </span>
+</nav>

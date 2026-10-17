@@ -1,133 +1,181 @@
 ﻿@* -----reference @inject gives this component the shared HeistPlan https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection *@
 @inject HeistPlan Plan
 
-<h3>Scout the targets</h3>
+@*----3 columns: steps on the left, search and artworks in the middle, target list on the right
+----all 3 are in this one component so the target list updates straight away when you add something *@
+<div class="targets-layout">
 
-<input placeholder="Search artworks..." @bind="searchText"/>
-<button @onclick="Search">Search</button>
+    <aside class="steps-col">
+        <StepsPanel/>
+    </aside>
 
-@if (errorMessage != null)
-{
-    <p class="text-danger">@errorMessage</p>
-}
+    <section class="results-col" id="collection">
+        <div class="search-bar">
+            <label for="artwork-search">Search the collection</label>
+            <div class="search-row">
+                <input id="artwork-search" placeholder="Artist, title or keyword..." @bind="searchText"/>
+                <button class="btn-heist" @onclick="Search">Search</button>
+            </div>
+        </div>
 
-@if (hasSearched && errorMessage == null && artworks.Count == 0)
-{
-    <p>No artworks found for "@lastSearch". Try another artist or keyword.</p>
-}
-
-@*----the layout puts the artwork grid on the left and the target list panel on the right *@
-<div class="layout">
-
-    <div class="artwork-grid">
-        @foreach (var artwork in artworks)
+        @if (errorMessage != null)
         {
+        <p class="text-danger">@errorMessage</p>
+        }
+
+        <div class="results-header">
+            <h2>The collection</h2>
+            @if (hasSearched && artworks.Count > 0)
+            {
+            <p class="results-count">@artworks.Count works for "@lastSearch" · sorted by title</p>
+            }
+        </div>
+
+        @if (!hasSearched)
+        {
+        <p class="empty-text">Search the collection to start choosing your targets.</p>
+        }
+
+        @if (hasSearched && errorMessage == null && artworks.Count == 0)
+        {
+        <p class="empty-text">No artworks found for "@lastSearch". Try another artist or keyword.</p>
+        }
+
+        <div class="artwork-grid">
+            @foreach (var artwork in artworks)
+            {
             <div class="artwork-card">
                 @if (artwork.ImageUrl != "" && !failedImages.Contains(artwork.Id))
                 {
-                    @*----reference for blazor @onerror event https://learn.microsoft.com/en-us/aspnet/core/blazor/components/event-handling *@
-                    <img src="@artwork.ImageUrl" alt="@artwork.Title" @onerror="() => ImageFailed(artwork)"/>
+                @*----reference for blazor @onerror event https://learn.microsoft.com/en-us/aspnet/core/blazor/components/event-handling *@
+                <img src="@artwork.ImageUrl" alt="@artwork.Title" @onerror="() => ImageFailed(artwork)"/>
                 }
                 else
                 {
-                    //-- when there's no image
-                    <div class="no-image">No image available</div>
+                //-- when there's no image
+                <div class="no-image">Image not on display</div>
                 }
-                <div class="artwork-info">
-                    <h5>@artwork.Title</h5>
-                    <p>@artwork.Artist · @artwork.DateDisplay</p>
-                    <p class="small-text">@artwork.Dimensions</p>
-                    @if (Plan.IsTarget(artwork))
-                    {
+
+                @*----styled like the little label next to a painting in a museum *@
+                <div class="wall-label">
+                    <span class="label-artist">@artwork.Artist</span>
+                    <span class="label-title">@artwork.Title</span>
+                    <span class="label-meta">@artwork.DateDisplay</span>
+                    <span class="label-meta">@artwork.MediumDisplay</span>
+                    <span class="label-small">@artwork.Dimensions</span>
+
+                    <div class="card-action">
+                        @if (Plan.IsTarget(artwork))
+                        {
                         //--- clicking again removes it, the button works as a toggle
-                        <button class="btn btn-sm btn-outline-warning mt-auto target-toggle" @onclick="() => RemoveTarget(artwork)">
-                            <span class="on-list">✓ On target list</span>
-                            <span class="remove-hint">✕ Remove target</span>
+                        <button class="btn-heist on-list-btn target-toggle" @onclick="() => RemoveTarget(artwork)">
+                            <span class="on-list">✓ On the list</span>
+                            <span class="remove-hint">✕ Remove</span>
                         </button>
+                        }
+                        else
+                        {
+                        <button class="btn-heist-outline" @onclick="() => AddTarget(artwork)">Add to the list</button>
+                        }
+                    </div>
+                </div>
+            </div>
+            }
+        </div>
+    </section>
+
+    <aside class="list-col">
+        <div class="ledger">
+            <p class="ledger-eyebrow">Acquisitions, unofficial</p>
+            <h2>The List</h2>
+            <p class="ledger-count">@Plan.Targets.Count of @HeistPlan.MAX_TARGETS pieces</p>
+
+            <ul>
+                @foreach (var target in Plan.Targets)
+                {
+                <li>
+                    @if (target.ImageUrl != "" && !failedImages.Contains(target.Id))
+                    {
+                    <img class="ledger-thumb" src="@target.ImageUrl" alt=""/>
                     }
                     else
                     {
-                        <button class="btn btn-sm btn-warning mt-auto" @onclick="() => AddTarget(artwork)">Add to target list</button>
+                    <div class="ledger-thumb"></div>
                     }
-                </div>
-            </div>
-        }
-    </div>
-
-    <div class="target-list">
-        <h4>Target list (@Plan.Targets.Count/@HeistPlan.MAX_TARGETS)</h4>
-
-        @if (targetMessage != null)
-        {
-            <p class="target-warning">@targetMessage</p>
-        }
-
-        @if (Plan.Targets.Count == 0)
-        {
-            <p class="small-text">No targets yet. Add up to @HeistPlan.MAX_TARGETS artworks.</p>
-        }
-
-        <ul>
-            @foreach (var target in Plan.Targets)
-            {
-                <li>
-                    <span>@target.Title</span>
-                    <button class="btn btn-sm btn-outline-light" @onclick="() => RemoveTarget(target)">Remove</button>
+                    <div class="ledger-text">
+                        <span class="ledger-title">@target.Title</span>
+                        <span class="ledger-artist">@target.Artist</span>
+                    </div>
+                    <button class="link-btn" aria-label="Remove @target.Title" @onclick="() => RemoveTarget(target)">Remove</button>
                 </li>
+                }
+
+                @*----one dashed box for every space left *@
+                @for (int i = Plan.Targets.Count; i < HeistPlan.MAX_TARGETS; i++)
+                {
+                <li class="empty-slot">Space in the van</li>
+                }
+            </ul>
+
+            @if (targetMessage != null)
+            {
+            <p class="target-warning">@targetMessage</p>
             }
-        </ul>
-    </div>
+
+            <a href="crew" class="btn-heist next-link">Next: recruit the crew →</a>
+        </div>
+    </aside>
 
 </div>
 
 @code {
-    private string? searchText;
-    private string? errorMessage;
-    private List<Artwork> artworks = new();
-    private bool hasSearched = false;
-    private string? lastSearch;
-    private List<int> failedImages = new();
-    private string? targetMessage;
+private string? searchText;
+private string? errorMessage;
+private List<Artwork> artworks = new();
+private bool hasSearched = false;
+private string? lastSearch;
+private List<int> failedImages = new();
+private string? targetMessage;
 
-    private void Search()
-    {
-        errorMessage = null;
-        hasSearched = true;
-        lastSearch = searchText;
-        if (string.IsNullOrWhiteSpace(searchText))
-        {
-            errorMessage = "Type something to search for.";
-            return;
-        }
+private void Search()
+{
+errorMessage = null;
+hasSearched = true;
+lastSearch = searchText;
+if (string.IsNullOrWhiteSpace(searchText))
+{
+errorMessage = "Type something to search for.";
+return;
+}
 
-        try
-        {
-            artworks = ArtworkService.SearchArtworks(searchText);
-            artworks.Sort();
-        }
-        catch (ApiException ex)
-        {
-            errorMessage = ex.Message;
-        }
-    }
+try
+{
+artworks = ArtworkService.SearchArtworks(searchText);
+artworks.Sort();
+}
+catch (ApiException ex)
+{
+errorMessage = ex.Message;
+}
+}
 
-    private void ImageFailed(Artwork artwork)
-    {
-        if (!failedImages.Contains(artwork.Id))
-        {
-            failedImages.Add(artwork.Id);
-        }
-    }
+private void ImageFailed(Artwork artwork)
+{
+if (!failedImages.Contains(artwork.Id))
+{
+failedImages.Add(artwork.Id);
+}
+}
 
-    //---the rules now live in HeistPlan the page just shows the message it gets back
-    private void AddTarget(Artwork artwork)
-    {
-        targetMessage = Plan.AddTarget(artwork);
-    }
+//---the rules now live in HeistPlan the page just shows the message it gets back
+private void AddTarget(Artwork artwork)
+{
+targetMessage = Plan.AddTarget(artwork);
+}
 
-    private void RemoveTarget(Artwork artwork)
-    {
-        Plan.RemoveTarget(artwork);
-        targetMessage = null;
-    }
+private void RemoveTarget(Artwork artwork)
+{
+Plan.RemoveTarget(artwork);
+targetMessage = null;
+}
 }

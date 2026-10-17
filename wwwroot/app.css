@@ -204,7 +204,7 @@ h1:focus {
     height: 400%;
     display: flex;
     flex-direction: column;
-    animation: heist-scroll 10.5s ease-in-out infinite;
+    animation: heist-scroll 45s ease-in-out infinite;
 }
 
 .slide {
@@ -226,12 +226,10 @@ h1:focus {
     background-image: url('images/hero-3.jpg');
 }
 
-/*---holds on each painting then moves the strip up by 25% (one painting)
----at 100% it lands on the copy of painting 1, which looks the same as the start, so the restart cant be seen*/
 @keyframes heist-scroll {
-    0%, 28%         { transform: translateY(0); }
-    33.33%, 61.33%  { transform: translateY(-25%); }
-    66.66%, 94.66%  { transform: translateY(-50%); }
+    0%, 31.1%       { transform: translateY(0); }
+    33.33%, 64.4%   { transform: translateY(-25%); }
+    66.66%, 97.8%   { transform: translateY(-50%); }
     100%            { transform: translateY(-75%); }
 }
 
@@ -255,15 +253,15 @@ h1:focus {
 }
 
 .dot-1 { animation-delay: 0s; }
-.dot-2 { animation-delay: 3.5s; }
-.dot-3 { animation-delay: 7s; }
+.dot-2 { animation-delay: 15s; }
+.dot-3 { animation-delay: 30s; }
 
 @keyframes heist-dot {
-    0%   { background: #ffffff; }
-    31%  { background: #ffffff; }
-    33%  { background: transparent; }
-    98%  { background: transparent; }
-    100% { background: #ffffff; }
+    0%     { background: #ffffff; }
+    32%    { background: #ffffff; }
+    33.33% { background: transparent; }
+    99%    { background: transparent; }
+    100%   { background: #ffffff; }
 }
 
 /*----ref prefers-reduced-motion, if someone turned off animations on their computer the strip stays still on the first painting - https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion */
