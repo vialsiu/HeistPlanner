@@ -112,7 +112,7 @@
 
 .step-number {
     font-family: var(--heist-mono);
-    color: var(--heist-accent);
+    color: inherit;
     margin-right: 0.75rem;
 }
 
