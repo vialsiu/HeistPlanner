@@ -13,7 +13,7 @@
     {
         public static readonly int HEAVY_CLOUD_PERCENT = 70;
         public static readonly double LOW_VISIBILITY_METRES = 5000;
-
+        public static readonly int LIKELY_RAIN_PERCENT = 60;   //---60% chance or more counts as rain cover
         private DateTime time;
         private double temperature;         //---°C
         private int rainChance;             //---%
@@ -141,7 +141,8 @@
         public WeatherCover GetCover()
         {
             string description = GetDescription();
-            if (description == "Fog" || description == "Drizzle" || description.Contains("rain") || description == "Snow")
+            if (description == "Fog" || description == "Drizzle" || description.Contains("rain") || description == "Snow"
+                || rainChance >= LIKELY_RAIN_PERCENT)
             {
                 return WeatherCover.Excellent;
             }
