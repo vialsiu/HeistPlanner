@@ -1,18 +1,15 @@
-﻿/*---3 columns, the middle one is the widest*/
-.targets-layout {
+﻿.targets-layout {
     display: grid;
     grid-template-columns: minmax(180px, 1fr) minmax(0, 3fr) minmax(260px, 1.3fr);
     gap: 2rem;
     align-items: start;
 }
 
-/*---the side columns stick in place while the middle scrolls*/
 .steps-col, .list-col {
     position: sticky;
     top: 1.5rem;
 }
 
-/*---search*/
 .search-bar label {
     display: block;
     font-size: 0.75rem;
@@ -156,7 +153,6 @@
     display: inline;
 }
 
-/*---the list (right column)*/
 .ledger {
     background: var(--heist-panel);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
@@ -259,7 +255,6 @@
     text-decoration: none;
 }
 
-/*---medium screens: hide the steps panel (the top nav still has the links)*/
 @media (max-width: 1099.98px) {
     .targets-layout {
         grid-template-columns: minmax(0, 3fr) minmax(250px, 1.3fr);
@@ -270,7 +265,6 @@
     }
 }
 
-/*---phones: one column, nothing sticky*/
 @media (max-width: 767.98px) {
     .targets-layout {
         grid-template-columns: 1fr;
