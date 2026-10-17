@@ -1,21 +1,22 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand heist-brand" href="">HEIST STEPS:</a>
-    </div>
-</div>
+﻿<div class="nav-wrap">
+    <nav class="heist-nav" aria-label="Heist steps">
+        <a class="brand" href="">
+            <svg aria-hidden="true" width="22" height="26" viewBox="0 0 22 26" fill="none" stroke="#806262" stroke-width="1.6">
+                <circle cx="11" cy="9" r="6"></circle>
+                <path d="M8.5 13.5 L6.5 24 L15.5 24 L13.5 13.5"></path>
+            </svg>
+            <span>The Heist Planner</span>
+        </a>
 
-<input type = "checkbox" title="Navigation menu" class ="navbar-toggler"/>
+        @* ---checkbox menu button for phones, same trick the template sidebar used *@
+        <input type="checkbox" title="Navigation menu" class="navbar-toggler"/>
 
-<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
-    <nav class="nav flex-column">
-        <div class="nav-item px-3">
+        <div class="nav-links" onclick="document.querySelector('.navbar-toggler').click()">
             <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="step-number">01</span> Targets
+                <span class="step-number">I</span> Targets
             </NavLink>
-        </div>
-        <div class="nav-item px-3">
             <NavLink class="nav-link" href="crew">
-                <span class="step-number">02</span> Crew
+                <span class="step-number">II</span> Crew
             </NavLink>
         </div>
     </nav>
