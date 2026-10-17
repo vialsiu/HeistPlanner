@@ -2,11 +2,15 @@
 
 <PageTitle>Targets - Heist Planner</PageTitle>
 
-@* ---full width painting slideshow, the 3 paintings fade in and out with css only (styles in app.css) *@
+@* ---full width painting slideshow, the paintings scroll upwards with css only (styles in app.css) *@
 <section class="hero hero-tall">
-    <div class="slide slide-1"></div>
-    <div class="slide slide-2"></div>
-    <div class="slide slide-3"></div>
+    @* ---the 3 paintings are stacked on one tall strip, the first one is repeated at the end so the loop back to the start is invisible *@
+    <div class="slide-track">
+        <div class="slide slide-1"></div>
+        <div class="slide slide-2"></div>
+        <div class="slide slide-3"></div>
+        <div class="slide slide-1"></div>
+    </div>
     <div class="hero-overlay"></div>
 
     <div class="hero-content">

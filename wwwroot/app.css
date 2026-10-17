@@ -133,15 +133,16 @@ h1:focus {
     position: relative;
     overflow: hidden;
     margin: -7rem calc(50% - 50vw) 2.5rem;   /*---the -7rem pulls it up under the floating nav*/
-    min-height: 480px;
     background-color: #2b2420;
     background-size: cover;
-    background-position: center;
+    background-position: center 30%;
     color: #ffffff;
 }
 
+/*---same height as the box the nav is stuck inside (NavMenu.razor.css) so the nav stops where the paintings end*/
 .hero-tall {
-    height: 680px;
+    height: 90vh;
+    min-height: 560px;
 }
 
 .hero-overlay {
@@ -193,40 +194,45 @@ h1:focus {
     opacity: 0.8;
 }
 
-/*---slideshow*/
-.slide {
+/*---slideshow: a strip 4 paintings tall (1, 2, 3, then 1 again) that moves up one painting at a time
+---each painting stays for about 3 seconds then scrolls, 3 x 3.5s = 10.5s loop*/
+.slide-track {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    bottom: 0;
+    height: 400%;
+    display: flex;
+    flex-direction: column;
+    animation: heist-scroll 10.5s ease-in-out infinite;
+}
+
+.slide {
+    flex: 0 0 25%;          /*---each painting is a quarter of the strip = the full height of the band*/
+    width: 100%;
     background-size: cover;
-    background-position: center;
-    opacity: 0;
-    animation: heist-fade 10.5s infinite;
+    background-position: center 30%;   /*---show more of the top of the painting so faces arent hidden behind the nav*/
 }
 
 .slide-1 {
     background-image: url('images/hero-1.jpg');
-    animation-delay: 0s;
 }
 
 .slide-2 {
     background-image: url('images/hero-2.jpg');
-    animation-delay: 3.5s;
 }
 
 .slide-3 {
     background-image: url('images/hero-3.jpg');
-    animation-delay: 7s;
 }
 
-@keyframes heist-fade {
-    0%   { opacity: 0; transform: scale(1.05); }
-    6%   { opacity: 1; transform: scale(1); }
-    33%  { opacity: 1; }
-    39%  { opacity: 0; }
-    100% { opacity: 0; }
+/*---holds on each painting then moves the strip up by 25% (one painting)
+---at 100% it lands on the copy of painting 1, which looks the same as the start, so the restart cant be seen*/
+@keyframes heist-scroll {
+    0%, 28%         { transform: translateY(0); }
+    33.33%, 61.33%  { transform: translateY(-25%); }
+    66.66%, 94.66%  { transform: translateY(-50%); }
+    100%            { transform: translateY(-75%); }
 }
 
 /*---dots on the right, each one fills in while its painting is showing*/
@@ -253,21 +259,17 @@ h1:focus {
 .dot-3 { animation-delay: 7s; }
 
 @keyframes heist-dot {
-    0%   { background: transparent; }
-    6%   { background: #ffffff; }
-    33%  { background: #ffffff; }
-    39%  { background: transparent; }
-    100% { background: transparent; }
+    0%   { background: #ffffff; }
+    31%  { background: #ffffff; }
+    33%  { background: transparent; }
+    98%  { background: transparent; }
+    100% { background: #ffffff; }
 }
 
-/*----ref prefers-reduced-motion, if someone turned off animations on their computer just show the first painting https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion */
+/*----ref prefers-reduced-motion, if someone turned off animations on their computer the strip stays still on the first painting - https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-    .slide, .dot {
+    .slide-track, .dot {
         animation: none;
-    }
-
-    .slide-1 {
-        opacity: 1;
     }
 }
 
@@ -275,6 +277,7 @@ h1:focus {
 @media (max-width: 767.98px) {
     .hero-tall {
         height: 520px;
+        min-height: 0;
     }
 
     .hero h1 {

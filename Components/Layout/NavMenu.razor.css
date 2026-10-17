@@ -1,16 +1,24 @@
 /*---floating white bar over the top of the page*/
+
 .nav-wrap {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
+    height: 90vh;
+    min-height: 560px;
     z-index: 10;
     display: flex;
     justify-content: center;
+    align-items: flex-start;
     padding: 0 1rem;
+    pointer-events: none; 
 }
 
 .heist-nav {
+    position: sticky;
+    top: 0;
+    pointer-events: auto;
     width: 85%;
     max-width: 1200px;
     background: rgba(255, 255, 255, 0.96);
@@ -36,7 +44,7 @@
     font-family: var(--heist-serif);
     font-weight: 700;
     font-size: 1.6rem;
-    color: #8f6f6f;
+    color: #67464c;
     white-space: nowrap;
 }
 
@@ -88,6 +96,11 @@
         width: 100%;
     }
 
+    .nav-wrap {
+        height: 520px;
+        min-height: 0;
+    }
+    
     .brand span {
         font-size: 1.25rem;
     }
