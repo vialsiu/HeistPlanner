@@ -1,0 +1,226 @@
+﻿@page "/night"
+@* ----ref @inject gets the same HeistPlan the other pages use https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection *@
+@inject HeistPlan Plan
+
+<PageTitle>The Night - Heist Planner</PageTitle>
+
+@* ---painting band with a night tint (styles in app.css) *@
+<section class="hero hero-tall hero-night">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <p class="hero-eyebrow">@Museum.NAME · Cleveland, Ohio</p>
+        <h1>Choose<br/>the<br/>Night</h1>
+        <a href="#night" class="hero-link">Darkness, moonlight and weather</a>
+    </div>
+</section>
+
+@* ---3 columns: steps on the left, the night in the middle, the verdict on the right *@
+<div class="page-layout">
+
+    <aside class="side-col steps-col">
+        <StepsPanel/>
+    </aside>
+
+    <section class="night-main" id="night">
+        <div class="section-header">
+            <h2>Pick the night</h2>
+            <p class="section-count">Times are the museum's local time</p>
+        </div>
+
+        <div class="night-form">
+            <div class="field">
+                <label for="night-date">Night of</label>
+                @* ----ref @bind works with <input type="date"> and a DateTime - https://learn.microsoft.com/en-us/aspnet/core/blazor/components/data-binding *@
+                <input id="night-date" type="date" @bind="nightOf"/>
+            </div>
+            <div class="field">
+                <label for="go-hour">Go time</label>
+                <select id="go-hour" @bind="goHour">
+                    @foreach (int hour in goHours)
+                    {
+                        <option value="@hour">@GetHourLabel(hour)</option>
+                    }
+                </select>
+            </div>
+            <button class="btn-heist" @onclick="CheckNight">Check the night</button>
+        </div>
+
+        @if (errorMessage != null)
+        {
+            <p class="text-danger">@errorMessage</p>
+        }
+
+        @if (Plan.Night != null && Plan.Weather != null && Plan.GoTime != null)
+        {
+            NightReport night = Plan.Night;
+            WeatherReport weather = Plan.Weather;
+            DateTime goTime = Plan.GoTime.Value;
+
+            @* ---darkness *@
+            <div class="night-panel">
+                <p class="panel-label">Darkness · Sunrise-Sunset</p>
+                <h3>@night.NightOf.ToString("dddd d MMMM")</h3>
+
+                @* ---timeline from sunset to sunrise, the dark part is shaded and the line is the go time *@
+                <div class="timeline" aria-hidden="true">
+                    @* ----ref @( ) explicit razor expression to put the number into the style https://learn.microsoft.com/en-us/aspnet/core/mvc/views/razor#explicit-razor-expressions *@
+                    <div class="timeline-dark" style="left: @(GetPercent(night, night.DarkStarts))%; width: @(GetPercent(night, night.DarkEnds) - GetPercent(night, night.DarkStarts))%"></div>
+                    <div class="timeline-go" style="left: @(GetPercent(night, goTime))%"></div>
+                </div>
+                <div class="timeline-labels">
+                    <span>Sunset @night.Sunset.ToString("h:mmtt")</span>
+                    <span>Sunrise @night.Sunrise.ToString("h:mmtt")</span>
+                </div>
+
+                <div class="facts">
+                    <div><span>Fully dark from</span><strong>@night.DarkStarts.ToString("h:mmtt")</strong></div>
+                    <div><span>Light again at</span><strong>@night.DarkEnds.ToString("h:mmtt")</strong></div>
+                    <div><span>Hours of darkness</span><strong>@night.GetDarkHours()</strong></div>
+                    <div><span>Go time</span><strong>@goTime.ToString("ddd h:mmtt")</strong></div>
+                </div>
+            </div>
+
+            <div class="night-panels">
+                @* ---moon *@
+                <div class="night-panel">
+                    <p class="panel-label">Moon</p>
+                    <h3>@night.MoonPhase</h3>
+                    <div class="facts">
+                        <div><span>Lit up</span><strong>@Math.Round(night.MoonIllumination)%</strong></div>
+                    </div>
+                    <p class="panel-note">More moon means more light on the street outside.</p>
+                </div>
+
+                @* ---weather *@
+                <div class="night-panel">
+                    <p class="panel-label">Weather at go time · Open-Meteo</p>
+                    <h3>@weather.GetDescription()</h3>
+                    <div class="facts">
+                        <div><span>Temperature</span><strong>@Math.Round(weather.Temperature)°C</strong></div>
+                        <div><span>Cloud</span><strong>@weather.CloudCover%</strong></div>
+                        <div><span>Chance of rain</span><strong>@weather.RainChance%</strong></div>
+                        <div><span>Visibility</span><strong>@Math.Round(weather.Visibility / 1000, 1) km</strong></div>
+                        <div><span>Wind</span><strong>@Math.Round(weather.WindSpeed) km/h</strong></div>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (errorMessage == null)
+        {
+            <p class="empty-text">Pick a night and a go time, then check it. Nights up to @WeatherService.MAX_DAYS_AHEAD days ahead can be checked, because that's as far as the weather forecast goes.</p>
+        }
+    </section>
+
+    @* ---right column: is it a good night? *@
+    <aside class="side-col">
+        <div class="verdict">
+            <p class="verdict-eyebrow">The verdict</p>
+            <h2>The Night</h2>
+
+            @if (Plan.Night != null && Plan.Weather != null && Plan.GoTime != null)
+            {
+                bool isDark = Plan.Night.IsDarkAt(Plan.GoTime.Value);
+                bool darkMoon = !Plan.Night.IsBrightMoon();
+                bool hasCover = Plan.Weather.GetCover() != WeatherCover.Poor;
+
+                <p class="verdict-date">@Plan.GoTime.Value.ToString("ddd d MMM · h:mmtt")</p>
+
+                <ul>
+                    <li class="@(isDark ? "good" : "bad")">
+                        <span class="mark">@(isDark ? "✓" : "✕")</span>
+                        <span>@(isDark ? "In full darkness" : "Not fully dark yet")</span>
+                    </li>
+                    <li class="@(darkMoon ? "good" : "bad")">
+                        <span class="mark">@(darkMoon ? "✓" : "✕")</span>
+                        <span>@(darkMoon ? "Dark moon" : "Bright moon")</span>
+                    </li>
+                    <li class="@(hasCover ? "good" : "bad")">
+                        <span class="mark">@(hasCover ? "✓" : "✕")</span>
+                        <span>@WeatherReport.GetCoverName(Plan.Weather.GetCover())</span>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                <p class="verdict-date">No night checked yet</p>
+            }
+
+            <a href="crew" class="btn-heist-outline next-link">← Back to the crew</a>
+        </div>
+    </aside>
+
+</div>
+
+@code {
+    private DateTime nightOf = DateTime.Today;
+    private int goHour = 1;
+    private string? errorMessage;
+
+    //---go times from 9pm to 4am, hours before midday count as after midnight (see NightReport.GetGoTime)
+    private int[] goHours = { 21, 22, 23, 0, 1, 2, 3, 4 };
+
+    //----ref OnInitialized runs when the page first loads https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle
+    protected override void OnInitialized()
+    {
+        //---if a night was already checked, show the same choices again
+        if (Plan.Night != null)
+        {
+            nightOf = Plan.Night.NightOf;
+            goHour = Plan.GoHour;
+        }
+    }
+
+    private void CheckNight()
+    {
+        errorMessage = null;
+
+        //---check the date first so we dont call the APIs for a night that cant work
+        string? dateProblem = WeatherService.CheckDate(nightOf, DateTime.Today);
+        if (dateProblem != null)
+        {
+            errorMessage = dateProblem;
+            return;
+        }
+
+        try
+        {
+            NightReport night = SunService.GetNight(nightOf);
+            DateTime goTime = NightReport.GetGoTime(nightOf, goHour);
+            WeatherReport weather = WeatherService.GetWeatherAt(goTime);
+            Plan.SetNight(night, weather, goHour);
+        }
+        catch (ApiException ex)
+        {
+            errorMessage = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            //---anything we didnt expect, show it on the page instead of crashing
+            errorMessage = "Something went wrong checking the night: " + ex.Message;
+        }
+    }
+
+    //---1 becomes "1 AM", 22 becomes "10 PM"
+    private string GetHourLabel(int hour)
+    {
+        return DateTime.Today.AddHours(hour).ToString("h tt");
+    }
+
+    //---where a time sits on the timeline, 0 = sunset and 100 = sunrise, whole numbers so the css always gets a plain number
+    private int GetPercent(NightReport night, DateTime time)
+    {
+        double total = (night.Sunrise - night.Sunset).TotalMinutes;
+        double part = (time - night.Sunset).TotalMinutes;
+        int percent = (int)Math.Round(part / total * 100);
+
+        if (percent < 0)
+        {
+            return 0;
+        }
+        if (percent > 100)
+        {
+            return 100;
+        }
+        return percent;
+    }
+}

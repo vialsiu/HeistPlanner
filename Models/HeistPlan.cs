@@ -9,6 +9,11 @@
         //---the key is the role so theres only ever one person per role
         private Dictionary<CrewRole, CrewMember> crew = new Dictionary<CrewRole, CrewMember>();
 
+        //---the night the user checked on The Night page, null until they check one
+        private NightReport? night;
+        private WeatherReport? weather;
+        private int goHour = 1;     //---1 = 1am
+
         public List<Artwork> Targets
         {
             get { return targets; }
@@ -17,6 +22,34 @@
         public Dictionary<CrewRole, CrewMember> Crew
         {
             get { return crew; }
+        }
+
+        public NightReport? Night
+        {
+            get { return night; }
+        }
+
+        public WeatherReport? Weather
+        {
+            get { return weather; }
+        }
+
+        public int GoHour
+        {
+            get { return goHour; }
+        }
+
+        //---the exact date and time of the heist, worked out from the night and the chosen hour
+        public DateTime? GoTime
+        {
+            get
+            {
+                if (night == null)
+                {
+                    return null;
+                }
+                return NightReport.GetGoTime(night.NightOf, goHour);
+            }
         }
 
         public HeistPlan()
@@ -82,6 +115,14 @@
                 total = total + member.GetCutPercentage();
             }
             return total;
+        }
+
+        //---saves everything from The Night page in one go so the night and the weather always match
+        public void SetNight(NightReport night, WeatherReport weather, int goHour)
+        {
+            this.night = night;
+            this.weather = weather;
+            this.goHour = goHour;
         }
     }
 }
