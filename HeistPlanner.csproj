@@ -8,8 +8,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-      <PackageReference Include="RestSharp" Version="114.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+        <PackageReference Include="RestSharp" Version="114.0.0" />
+    </ItemGroup>
+
+    <!--ref to exclude files from the build - https://learn.microsoft.com/en-us/visualstudio/msbuild/how-to-exclude-files-from-the-build -->
+    <!-- The test project sits inside this folder, so stop the web app from compiling the test files -->
+    <ItemGroup>
+        <Compile Remove="HeistPlanner.UnitTests\**" />
+        <Content Remove="HeistPlanner.UnitTests\**" />
+        <EmbeddedResource Remove="HeistPlanner.UnitTests\**" />
+        <None Remove="HeistPlanner.UnitTests\**" />
     </ItemGroup>
 
 </Project>
