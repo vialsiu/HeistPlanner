@@ -1,0 +1,173 @@
+﻿@page "/crew"
+@* ----ref @inject gets the same HeistPlan the targets page uses https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/dependency-injection *@
+@inject HeistPlan Plan
+
+<PageTitle>Crew - Heist Planner</PageTitle>
+
+<h1>Recruit the crew</h1>
+<p class="intro">Five roles, one person each. Every specialist makes the job safer, but everyone takes a cut of the loot.</p>
+
+<h3 class="section-label">Your crew · @Plan.Crew.Count / @roles.Length hired · they take @Plan.GetTotalCutPercentage()% of the loot</h3>
+
+<div class="crew-grid">
+    @foreach (CrewRole role in roles)
+    {
+        CrewMember? member = Plan.GetCrewMember(role);
+        if (member != null)
+        {
+            <div class="crew-card hired">
+                <span class="role-label">@CrewMember.GetRoleName(role)</span>
+                <div class="person">
+                    <img src="@member.PhotoUrl" alt="@member.Name"/>
+                    <div>
+                        <strong>@member.Name</strong><br/>
+                        <span class="small-text">@member.Country · @member.Age</span>
+                    </div>
+                </div>
+                <div class="skill-row">
+                    <span>Skill</span>
+                    <span>@member.Skill</span>
+                </div>
+                <div class="skill-bar">
+                    @* ----ref @( ) explicit razor expression so the number goes right before the % https://learn.microsoft.com/en-us/aspnet/core/mvc/views/razor#explicit-razor-expressions *@
+                    <div style="width: @(member.Skill)%"></div>
+                </div>
+                <p class="small-text">@member.Perk</p>
+                <p class="small-text">Takes @member.GetCutPercentage()% of the loot</p>
+                <button class="btn btn-sm btn-outline-light mt-auto" @onclick="() => Fire(role)">Fire</button>
+            </div>
+        }
+        else
+        {
+            <div class="crew-card empty">
+                <span class="role-label">@CrewMember.GetRoleName(role)</span>
+                <strong>Seat empty</strong>
+                <span class="small-text">Hire someone from the candidates below</span>
+            </div>
+        }
+    }
+</div>
+
+<div class="candidates-header">
+    <h3 class="section-label">Candidates for hire</h3>
+    <div class="hire-controls">
+        <label>
+            Hire as
+            @* ----ref @bind on a select, the dropdown value goes straight into selectedRole https://learn.microsoft.com/en-us/aspnet/core/blazor/components/data-binding *@
+            <select @bind="selectedRole">
+                @foreach (CrewRole role in roles)
+                {
+                    <option value="@role">@CrewMember.GetRoleName(role)</option>
+                }
+            </select>
+        </label>
+        <button class="btn btn-sm btn-outline-warning" @onclick="LoadCandidates">↻ New candidates</button>
+    </div>
+</div>
+
+@if (hireMessage != null)
+{
+    <p class="hire-message">@hireMessage</p>
+}
+
+@if (errorMessage != null)
+{
+    <p class="text-danger">@errorMessage</p>
+}
+
+@if (errorMessage == null && candidates.Count == 0)
+{
+    <p class="small-text">No candidates left. Click "New candidates" to get more.</p>
+}
+
+<table class="candidates">
+    <thead>
+        <tr>
+            <th>Candidate</th>
+            <th>Country</th>
+            <th>Age</th>
+            <th>Rated skill</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var person in candidates)
+        {
+            <tr>
+                <td class="candidate-name">
+                    <img src="@person.picture.large" alt=""/>
+                    @person.name.first @person.name.last
+                </td>
+                <td>@person.location.country</td>
+                <td>@person.dob.age</td>
+                <td>@person.skill</td>
+                <td>
+                    <button class="btn btn-sm btn-warning" @onclick="() => Hire(person)">Hire</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    //----ref Enum.GetValues gives back every value in the enum so we can loop through all 5 roles https://learn.microsoft.com/en-us/dotnet/api/system.enum.getvalues
+    private CrewRole[] roles = Enum.GetValues<CrewRole>();
+    private List<RandomUserResult> candidates = new();
+    private CrewRole selectedRole = CrewRole.Hacker;
+    private string? errorMessage;
+    private string? hireMessage;
+
+    //----ref OnInitialized runs when the page first loads, so candidates are there straight away https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle
+    //---(the docs say with prerendering it actually runs twice so the API gets called twice, doesnt break anything here)
+    protected override void OnInitialized()
+    {
+        LoadCandidates();
+    }
+
+    private void LoadCandidates()
+    {
+        errorMessage = null;
+        hireMessage = null;
+        try
+        {
+            candidates = CrewService.GetCandidates(6);
+        }
+        catch (ApiException ex)
+        {
+            errorMessage = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            //---anything we didnt expect, show it on the page instead of crashing
+            errorMessage = "Something went wrong getting candidates: " + ex.Message;
+        }
+    }
+
+    private void Hire(RandomUserResult person)
+    {
+        CrewMember? previous = Plan.GetCrewMember(selectedRole);
+        CrewMember member = CrewService.CreateCrewMember(person, selectedRole);
+        Plan.Hire(member);
+        candidates.Remove(person);
+
+        string roleName = CrewMember.GetRoleName(selectedRole);
+        if (previous != null)
+        {
+            hireMessage = $"{member.Name} replaces {previous.Name} as {roleName}.";
+        }
+        else
+        {
+            hireMessage = $"{member.Name} hired as {roleName}.";
+        }
+    }
+
+    private void Fire(CrewRole role)
+    {
+        CrewMember? member = Plan.GetCrewMember(role);
+        Plan.Fire(role);
+        if (member != null)
+        {
+            hireMessage = $"{member.Name} has been fired.";
+        }
+    }
+}
