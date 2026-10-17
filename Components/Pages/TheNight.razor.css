@@ -1,0 +1,200 @@
+﻿/*---date + go time form*/
+.night-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.field label {
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--heist-muted);
+}
+
+.field input, .field select {
+    font-family: var(--heist-font);
+    font-size: 1rem;
+    padding: 0.6rem 0.8rem;
+    min-height: 44px;
+    background: #f4f1ee;
+    border: 1px solid #9e958d;
+    color: var(--heist-text);
+}
+
+.empty-text {
+    color: var(--heist-muted);
+}
+
+/*---panels*/
+.night-panels {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+}
+
+.night-panel {
+    background: var(--heist-panel);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    padding: 1.4rem 1.4rem 1.5rem;
+}
+
+.panel-label {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--heist-rose);
+}
+
+.night-panel h3 {
+    font-size: 1.6rem;
+    margin: 0.3rem 0 1rem;
+}
+
+.panel-note {
+    margin: 0.9rem 0 0;
+    font-size: 0.85rem;
+    color: var(--heist-muted);
+}
+
+/*---timeline sunset to sunrise*/
+.timeline {
+    position: relative;
+    height: 14px;
+    background: #e7d9c4;          /*---dusk and dawn colour*/
+}
+
+.timeline-dark {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: #262a40;          /*---full darkness*/
+}
+
+.timeline-go {
+    position: absolute;
+    top: -6px;
+    bottom: -6px;
+    width: 3px;
+    margin-left: -1px;
+    background: var(--heist-rose);
+}
+
+.timeline-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: var(--heist-muted);
+}
+
+/*---small fact rows*/
+.facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.75rem 1.25rem;
+    margin-top: 1.1rem;
+}
+
+.facts div {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--heist-line);
+    padding-top: 0.5rem;
+}
+
+.facts span {
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--heist-muted);
+}
+
+.facts strong {
+    font-family: var(--heist-serif);
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+/*---verdict (right column)*/
+.verdict {
+    background: var(--heist-panel);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem 1.4rem;
+}
+
+.verdict-eyebrow {
+    margin: 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--heist-muted);
+}
+
+.verdict h2 {
+    font-size: 2rem;
+    margin: 0.3rem 0 0.2rem;
+}
+
+.verdict-date {
+    margin: 0 0 1rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--heist-muted);
+}
+
+.verdict ul {
+    list-style: none;
+    margin: 0;
+    padding: 0.75rem 0 0;
+    border-top: 1px solid var(--heist-line);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.verdict li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.mark {
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 0.85rem;
+    flex: none;
+}
+
+.good .mark {
+    background: var(--heist-good);
+}
+
+.bad .mark {
+    background: var(--heist-bad);
+}
+
+.next-link {
+    display: block;
+    text-align: center;
+    margin-top: 1.4rem;
+    text-decoration: none;
+}

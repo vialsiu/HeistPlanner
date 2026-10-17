@@ -326,3 +326,38 @@ h1:focus {
 .hero-crew {
     background-image: url('images/crew-hero.jpg');
 }
+
+
+/*---night page painting with a dark blue tint so it feels like night time*/
+.hero-night {
+    background-image: url('images/hero-2.jpg');
+}
+
+.hero-night .hero-overlay {
+    background: rgba(14, 18, 38, 0.62);
+}
+
+/*---section heading with a line under it, used on the night page*/
+.section-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.6rem 1rem;
+    border-bottom: 1px solid #b9b0a8;
+    padding-bottom: 0.6rem;
+    margin: 0 0 1.25rem;
+}
+
+.section-header h2 {
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.section-count {
+    margin: 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--heist-muted);
+}
