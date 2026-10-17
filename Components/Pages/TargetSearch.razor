@@ -20,66 +20,69 @@
 
         @if (errorMessage != null)
         {
-        <p class="text-danger">@errorMessage</p>
+            <p class="text-danger">@errorMessage</p>
         }
 
         <div class="results-header">
-            <h2>The collection</h2>
-            @if (hasSearched && artworks.Count > 0)
+            @if (showingFeatured)
             {
-            <p class="results-count">@artworks.Count works for "@lastSearch" · sorted by title</p>
+                <h2>Featured from the collection</h2>
+                <p class="results-count">@artworks.Count works · sorted by title</p>
+            }
+            else
+            {
+                <h2>Search results</h2>
+                <p class="results-count">
+                    @artworks.Count works for "@lastSearch" ·
+                    <button class="link-btn" @onclick="LoadFeatured">Show featured works again</button>
+                </p>
             }
         </div>
 
-        @if (!hasSearched)
+        @if (!showingFeatured && errorMessage == null && artworks.Count == 0)
         {
-        <p class="empty-text">Search the collection to start choosing your targets.</p>
-        }
-
-        @if (hasSearched && errorMessage == null && artworks.Count == 0)
-        {
-        <p class="empty-text">No artworks found for "@lastSearch". Try another artist or keyword.</p>
+            <p class="empty-text">No artworks found for "@lastSearch". Try another artist or keyword.</p>
         }
 
         <div class="artwork-grid">
             @foreach (var artwork in artworks)
             {
-            <div class="artwork-card">
-                @if (artwork.ImageUrl != "" && !failedImages.Contains(artwork.Id))
-                {
-                @*----reference for blazor @onerror event https://learn.microsoft.com/en-us/aspnet/core/blazor/components/event-handling *@
-                <img src="@artwork.ImageUrl" alt="@artwork.Title" @onerror="() => ImageFailed(artwork)"/>
-                }
-                else
-                {
-                //-- when there's no image
-                <div class="no-image">Image not on display</div>
-                }
+                <div class="artwork-card">
+                    @if (artwork.ImageUrl != "" && !failedImages.Contains(artwork.Id))
+                    {
+                        @*----reference for blazor @onerror event https://learn.microsoft.com/en-us/aspnet/core/blazor/components/event-handling *@
+                        <img src="@artwork.ImageUrl" alt="@artwork.Title" @onerror="() => ImageFailed(artwork)"/>
+                    }
+                    else
+                    {
+                        //-- when there's no image
+                        <div class="no-image">Image not on display</div>
+                    }
 
-                @*----styled like the little label next to a painting in a museum *@
-                <div class="wall-label">
-                    <span class="label-artist">@artwork.Artist</span>
-                    <span class="label-title">@artwork.Title</span>
-                    <span class="label-meta">@artwork.DateDisplay</span>
-                    <span class="label-meta">@artwork.MediumDisplay</span>
-                    <span class="label-small">@artwork.Dimensions</span>
+                    @*----styled like the little label next to a painting in a museum *@
+                    <div class="wall-label">
+                        <span class="label-artist">@artwork.Artist</span>
+                        <span class="label-title">@artwork.Title</span>
+                        <span class="label-meta">@artwork.DateDisplay</span>
+                        <span class="label-meta">@artwork.MediumDisplay</span>
+                        <span class="label-small">@artwork.Dimensions</span>
 
-                    <div class="card-action">
-                        @if (Plan.IsTarget(artwork))
-                        {
-                        //--- clicking again removes it, the button works as a toggle
-                        <button class="btn-heist on-list-btn target-toggle" @onclick="() => RemoveTarget(artwork)">
-                            <span class="on-list">✓ On the list</span>
-                            <span class="remove-hint">✕ Remove</span>
-                        </button>
-                        }
-                        else
-                        {
-                        <button class="btn-heist-outline" @onclick="() => AddTarget(artwork)">Add to the list</button>
-                        }
+                        <div class="card-action">
+                            @if (Plan.IsTarget(artwork))
+                            {
+                                //--- clicking again removes it, the button works as a toggle
+                                <button class="btn-heist on-list-btn target-toggle" @onclick="() => RemoveTarget(artwork)">
+                                    <span class="on-list">✓ On the list</span>
+                                    <span class="remove-hint">✕ Remove</span>
+                                </button>
+                            }
+                            else
+                            {
+                                <button class="btn-heist-outline" @onclick="() => AddTarget(artwork)">Add to the list</button>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
             }
         </div>
     </section>
@@ -93,33 +96,33 @@
             <ul>
                 @foreach (var target in Plan.Targets)
                 {
-                <li>
-                    @if (target.ImageUrl != "" && !failedImages.Contains(target.Id))
-                    {
-                    <img class="ledger-thumb" src="@target.ImageUrl" alt=""/>
-                    }
-                    else
-                    {
-                    <div class="ledger-thumb"></div>
-                    }
-                    <div class="ledger-text">
-                        <span class="ledger-title">@target.Title</span>
-                        <span class="ledger-artist">@target.Artist</span>
-                    </div>
-                    <button class="link-btn" aria-label="Remove @target.Title" @onclick="() => RemoveTarget(target)">Remove</button>
-                </li>
+                    <li>
+                        @if (target.ImageUrl != "" && !failedImages.Contains(target.Id))
+                        {
+                            <img class="ledger-thumb" src="@target.ImageUrl" alt=""/>
+                        }
+                        else
+                        {
+                            <div class="ledger-thumb"></div>
+                        }
+                        <div class="ledger-text">
+                            <span class="ledger-title">@target.Title</span>
+                            <span class="ledger-artist">@target.Artist</span>
+                        </div>
+                        <button class="link-btn" aria-label="Remove @target.Title" @onclick="() => RemoveTarget(target)">Remove</button>
+                    </li>
                 }
 
                 @*----one dashed box for every space left *@
                 @for (int i = Plan.Targets.Count; i < HeistPlan.MAX_TARGETS; i++)
                 {
-                <li class="empty-slot">Space in the van</li>
+                    <li class="empty-slot">Space in the van</li>
                 }
             </ul>
 
             @if (targetMessage != null)
             {
-            <p class="target-warning">@targetMessage</p>
+                <p class="target-warning">@targetMessage</p>
             }
 
             <a href="crew" class="btn-heist next-link">Next: recruit the crew →</a>
@@ -129,53 +132,75 @@
 </div>
 
 @code {
-private string? searchText;
-private string? errorMessage;
-private List<Artwork> artworks = new();
-private bool hasSearched = false;
-private string? lastSearch;
-private List<int> failedImages = new();
-private string? targetMessage;
+    private string? searchText;
+    private string? errorMessage;
+    private List<Artwork> artworks = new();
+    private bool showingFeatured = true;
+    private string? lastSearch;
+    private List<int> failedImages = new();
+    private string? targetMessage;
 
-private void Search()
-{
-errorMessage = null;
-hasSearched = true;
-lastSearch = searchText;
-if (string.IsNullOrWhiteSpace(searchText))
-{
-errorMessage = "Type something to search for.";
-return;
-}
+    //----ref OnInitialized runs when the page first loads so the featured works are there before any search - https://learn.microsoft.com/en-us/aspnet/core/blazor/components/lifecycle
+    protected override void OnInitialized()
+    {
+        LoadFeatured();
+    }
 
-try
-{
-artworks = ArtworkService.SearchArtworks(searchText);
-artworks.Sort();
-}
-catch (ApiException ex)
-{
-errorMessage = ex.Message;
-}
-}
+    private void LoadFeatured()
+    {
+        errorMessage = null;
+        showingFeatured = true;
+        try
+        {
+            artworks = ArtworkService.GetFeaturedArtworks();
+            artworks.Sort();
+        }
+        catch (ApiException ex)
+        {
+            errorMessage = ex.Message;
+            artworks = new List<Artwork>();
+        }
+    }
 
-private void ImageFailed(Artwork artwork)
-{
-if (!failedImages.Contains(artwork.Id))
-{
-failedImages.Add(artwork.Id);
-}
-}
+    private void Search()
+    {
+        errorMessage = null;
+        if (string.IsNullOrWhiteSpace(searchText))
+        {
+            errorMessage = "Type something to search for.";
+            return;
+        }
 
-//---the rules now live in HeistPlan the page just shows the message it gets back
-private void AddTarget(Artwork artwork)
-{
-targetMessage = Plan.AddTarget(artwork);
-}
+        showingFeatured = false;
+        lastSearch = searchText;
+        try
+        {
+            artworks = ArtworkService.SearchArtworks(searchText);
+            artworks.Sort();
+        }
+        catch (ApiException ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
 
-private void RemoveTarget(Artwork artwork)
-{
-Plan.RemoveTarget(artwork);
-targetMessage = null;
-}
+    private void ImageFailed(Artwork artwork)
+    {
+        if (!failedImages.Contains(artwork.Id))
+        {
+            failedImages.Add(artwork.Id);
+        }
+    }
+
+    //---the rules now live in HeistPlan the page just shows the message it gets back
+    private void AddTarget(Artwork artwork)
+    {
+        targetMessage = Plan.AddTarget(artwork);
+    }
+
+    private void RemoveTarget(Artwork artwork)
+    {
+        Plan.RemoveTarget(artwork);
+        targetMessage = null;
+    }
 }
