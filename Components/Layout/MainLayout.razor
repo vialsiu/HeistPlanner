@@ -1,19 +1,25 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
+    <NavMenu/>
 
     <main>
-        <div class="top-row px-4">
-            <span class="case-file">DON'T GET CAUGHT!!</span>
-        </div>
-
-        <article class="content px-4">
-            @Body
-        </article>
+        @Body
     </main>
+
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div>
+                <h3>The Heist Planner</h3>
+                <p>Mark your targets, hire your crew and don't get caught.</p>
+            </div>
+            <div>
+                <h3>Data from</h3>
+                <p>Cleveland Museum of Art · RandomUser · Sunrise-Sunset · Open-Meteo</p>
+            </div>
+        </div>
+        <p class="footer-bottom">SD4 Service Oriented Architecture · CA1 · D00265675</p>
+    </footer>
 </div>
 
 <div id="blazor-error-ui" data-nosnippet>

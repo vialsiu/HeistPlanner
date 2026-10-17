@@ -1,104 +1,134 @@
-﻿.artwork-grid {
+﻿
+
+.search-bar label {
+    display: block;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--heist-muted);
+    margin-bottom: 0.4rem;
+}
+
+.search-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.search-row input {
+    flex: 1 1 240px;
+    font-family: var(--heist-font);
+    font-size: 1.05rem;
+    padding: 0.7rem 0.9rem;
+    background: #f4f1ee;
+    border: 1px solid #9e958d;
+    color: var(--heist-text);
+}
+
+.results-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.4rem 1rem;
+    border-bottom: 1px solid #b9b0a8;
+    padding-bottom: 0.6rem;
+    margin: 2rem 0 1.25rem;
+}
+
+.results-header h2 {
+    font-size: 1.8rem;
+    margin: 0;
+}
+
+.results-count {
+    margin: 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--heist-muted);
+}
+
+.empty-text {
+    color: var(--heist-muted);
+}
+
+/*---artwork cards*/
+.artwork-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 1.75rem;
 }
 
 .artwork-card {
     background: var(--heist-panel);
-    border: 1px solid var(--heist-line);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
 }
 
 .artwork-card img {
     width: 100%;
-    height: 180px;
+    height: 230px;
     object-fit: cover;
+    display: block;
 }
 
 .no-image {
-    height: 180px;
+    height: 230px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #23272E;
+    background: var(--heist-panel-2);
     color: var(--heist-muted);
-    font-family: var(--heist-mono);
-    font-size: 0.75rem;
-}
-
-.artwork-info {
-    padding: 0.75rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    flex: 1;
-}
-
-.artwork-info h5 {
-    font-size: 1rem;
-    font-weight: 700;
-    margin: 0;
-}
-
-.artwork-info p {
-    margin: 0;
-    color: var(--heist-muted);
-    font-size: 0.85rem;
-}
-
-.small-text {
-    color: var(--heist-muted);
-    font-family: var(--heist-mono);
-    font-size: 0.75rem;
-}
-
-.layout {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    align-items: flex-start;
-    margin-top: 1rem;
-}
-
-.layout .artwork-grid {
-    flex: 3 1 500px;
-    margin-top: 0;
-}
-
-.target-list {
-    flex: 1 1 250px;
-    background: var(--heist-panel);
-    border: 1px solid var(--heist-line);
-    padding: 1rem;
-}
-
-.target-list h4 {
-    font-weight: 900;
-    font-stretch: 75%;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
-.target-list ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.target-list li {
+/*---museum wall label*/
+.wall-label {
+    padding: 1rem 1.1rem 1.1rem;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 0;
-    border-bottom: 1px dashed var(--heist-line);
+    flex-direction: column;
+    gap: 0.2rem;
+    flex: 1;
 }
 
-.target-warning {
-    color: var(--heist-accent);
-    font-size: 0.9rem;
+.label-artist {
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.label-title {
+    font-family: var(--heist-serif);
+    font-style: italic;
+    font-size: 1.2rem;
+    line-height: 1.25;
+}
+
+.label-meta {
+    font-size: 0.875rem;
+    color: var(--heist-muted);
+}
+
+.label-small {
+    font-size: 0.8rem;
+    color: var(--heist-muted);
+}
+
+.card-action {
+    margin-top: auto;
+    padding-top: 0.9rem;
+}
+
+.card-action button {
+    width: 100%;
+}
+
+.on-list-btn {
+    background-color: var(--heist-text);
+    border-color: var(--heist-text);
 }
 
 .target-toggle .remove-hint {
@@ -112,3 +142,110 @@
 .target-toggle:hover .remove-hint {
     display: inline;
 }
+
+.ledger {
+    background: var(--heist-panel);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem 1.4rem;
+}
+
+.ledger-eyebrow {
+    margin: 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--heist-muted);
+}
+
+.ledger h2 {
+    font-size: 2rem;
+    margin: 0.3rem 0 0.2rem;
+}
+
+.ledger-count {
+    margin: 0 0 1rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--heist-muted);
+}
+
+.ledger ul {
+    list-style: none;
+    margin: 0;
+    padding: 1rem 0 0;
+    border-top: 1px solid var(--heist-line);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.ledger li {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.ledger-thumb {
+    width: 52px;
+    height: 52px;
+    object-fit: cover;
+    flex: none;
+    background: var(--heist-panel-2);
+}
+
+.ledger-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.ledger-title {
+    font-family: var(--heist-serif);
+    font-style: italic;
+    font-size: 1rem;
+}
+
+.ledger-artist {
+    font-size: 0.8rem;
+    color: var(--heist-muted);
+}
+
+.link-btn {
+    background: none;
+    border: none;
+    color: var(--heist-accent);
+    text-decoration: underline;
+    font-size: 0.85rem;
+    min-height: 44px;
+    padding: 0 0.25rem;
+    cursor: pointer;
+}
+
+.ledger li.empty-slot {
+    border: 1px dashed #a89e96;
+    padding: 0.9rem;
+    justify-content: center;
+    color: var(--heist-muted);
+    font-size: 0.85rem;
+}
+
+.target-warning {
+    margin: 1rem 0 0;
+    padding: 0.6rem 0.75rem;
+    background: var(--heist-panel-2);
+    font-size: 0.9rem;
+}
+
+.next-link {
+    display: block;
+    text-align: center;
+    margin-top: 1.25rem;
+    text-decoration: none;
+}
+
+
+    .list-col {
+        position: static;
+    }
