@@ -1,0 +1,155 @@
+﻿.intro {
+    color: var(--heist-muted);
+    max-width: 600px;
+}
+
+.section-label {
+    font-family: var(--heist-mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--heist-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 1.5rem 0 0.75rem;
+}
+
+/* ---- your crew: 5 seats */
+.crew-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.crew-card {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-height: 260px;
+}
+
+.crew-card.hired {
+    background: var(--heist-panel);
+    border: 1px solid var(--heist-line);
+    border-top: 3px solid var(--heist-accent);
+}
+
+.crew-card.empty {
+    border: 1px dashed var(--heist-line);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--heist-muted);
+}
+
+.role-label {
+    font-family: var(--heist-mono);
+    font-size: 0.7rem;
+    color: var(--heist-accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.person {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.person img {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.skill-row {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--heist-mono);
+    font-size: 0.8rem;
+}
+
+.skill-bar {
+    height: 6px;
+    background: var(--heist-bg);
+}
+
+.skill-bar div {
+    height: 100%;
+    background: var(--heist-accent);
+}
+
+.small-text {
+    color: var(--heist-muted);
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+/* ---- candidates table */
+.candidates-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.hire-controls {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-end;
+    font-family: var(--heist-mono);
+    font-size: 0.8rem;
+    color: var(--heist-muted);
+}
+
+.hire-controls select {
+    display: block;
+    margin-top: 0.25rem;
+    background: var(--heist-bg);
+    color: var(--heist-text);
+    border: 1px solid var(--heist-line);
+    padding: 0.35rem 0.5rem;
+}
+
+.hire-message {
+    font-family: var(--heist-mono);
+    font-size: 0.85rem;
+    color: var(--heist-good);
+    margin: 0.75rem 0 0;
+}
+
+.candidates {
+    width: 100%;
+    margin-top: 0.75rem;
+    background: var(--heist-panel);
+    color: var(--heist-text);
+    border: 1px solid var(--heist-line);
+    border-collapse: collapse;
+}
+
+.candidates th {
+    font-family: var(--heist-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--heist-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.75rem 1rem;
+    text-align: left;
+}
+
+.candidates td {
+    padding: 0.6rem 1rem;
+    border-top: 1px solid var(--heist-line);
+    vertical-align: middle;
+}
+
+.candidate-name img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    margin-right: 0.6rem;
+}

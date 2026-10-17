@@ -1,48 +1,87 @@
 
-
 :root {
-    --heist-bg: #0E1013;
-    --heist-panel: #171A1F;
-    --heist-line: #2A2F37;
-    --heist-text: #ECE7DD;
-    --heist-muted: #9AA1AB;
-    --heist-accent: #e23de8;
-    --heist-good: #7FC8BE;
-    --heist-bad: #F08A6E;
-    --heist-font: 'Archivo', sans-serif;
-    --heist-mono: 'IBM Plex Mono', monospace;
+    --heist-bg: #dcdad8;  
+    --heist-panel: #efe9e9;     
+    --heist-panel-2: #e2dddd;    
+    --heist-line: #c6c0ba;   
+    --heist-text: #3E3A36;      
+    --heist-muted: #5d544d;      
+    --heist-accent: #744A2B;  
+    --heist-rose: #806262;   
+    --heist-good: #3f6b52;   
+    --heist-bad: #9b3b2a;      
+    --heist-font: 'Lato', sans-serif;
+    --heist-serif: 'Playfair Display', serif;
+    --heist-mono: 'Lato', sans-serif;
 }
 
-body {
+html, body {
     background-color: var(--heist-bg);
     color: var(--heist-text);
     font-family: var(--heist-font);
 }
 
 h1, h2, h3 {
-    font-weight: 900;
-    font-stretch: 75%;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-}
-
-
-html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: var(--heist-serif);
+    font-weight: 700;
+    color: var(--heist-text);
 }
 
 a, .btn-link {
-    color: #006bb7;
+    color: var(--heist-accent);
 }
 
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+a:hover {
+    color: var(--heist-text);
+}
+
+.text-danger {
+    color: var(--heist-bad) !important;
+}
+
+/*---main button style used across the pages*/
+.btn-heist {
+    font-family: var(--heist-font);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background-color: var(--heist-accent);
+    color: #ffffff;
+    border: 1px solid var(--heist-accent);
+    border-radius: 0;
+    padding: 0.7rem 1.4rem;
+    min-height: 44px;
+}
+
+.btn-heist:hover {
+    background-color: #5c3a22;
+    border-color: #5c3a22;
+    color: #ffffff;
+}
+
+/*---outline version for secondary buttons*/
+.btn-heist-outline {
+    font-family: var(--heist-font);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background-color: transparent;
+    color: var(--heist-accent);
+    border: 1px solid var(--heist-accent);
+    border-radius: 0;
+    padding: 0.7rem 1.4rem;
+    min-height: 44px;
+}
+
+.btn-heist-outline:hover {
+    background-color: var(--heist-accent);
+    color: #ffffff;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--heist-rose);
 }
 
 .content {
