@@ -53,11 +53,32 @@
     color: var(--heist-muted);
 }
 
-/*---artwork cards, 4 square paintings in a row with the text underneath*/
+/*---the targets page gets a wider layout than the other pages so the paintings can be bigger
+----same full width trick as the hero, but it stops at 1800px on very big screens */
+.targets-layout {
+    grid-template-columns: minmax(170px, 0.8fr) minmax(0, 4fr) minmax(250px, 1.1fr);
+    margin-left: calc(50% - min(900px, 50vw - 1.5rem));
+    margin-right: calc(50% - min(900px, 50vw - 1.5rem));
+}
+
+/*---the column sizes above beat the ones in app.css, so the smaller screen versions are repeated here*/
+@media (max-width: 1099.98px) {
+    .targets-layout {
+        grid-template-columns: minmax(0, 3fr) minmax(250px, 1.2fr);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .targets-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/*---artwork cards, big square paintings with the text underneath*/
 .artwork-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 2rem 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2.25rem 1.75rem;
 }
 
 .artwork-card {
@@ -66,89 +87,135 @@
     text-align: center;
 }
 
+/*---the painting is a button so it can be clicked, these lines take away the normal button look*/
 /*----ref aspect-ratio keeps the picture square whatever width the column is https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio */
-.artwork-card img, .no-image {
+.card-image {
+    position: relative;
+    display: block;
     width: 100%;
     aspect-ratio: 1 / 1;
+    padding: 0;
+    border: none;
+    background: var(--heist-panel-2);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card-image img, .no-image {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     display: block;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    transition: transform 0.5s ease;
 }
 
 .no-image {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--heist-panel-2);
     color: var(--heist-muted);
     font-size: 0.75rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
+/*---hover: the card lifts a little, the painting zooms in slowly and the dark layer fades in*/
+.card-image:hover, .card-image:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
+}
+
+.card-image:hover img, .card-image:focus-visible img {
+    transform: scale(1.06);
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(30, 22, 18, 0.55);
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card-image:hover .card-overlay, .card-image:focus-visible .card-overlay {
+    opacity: 1;
+}
+
+.card-image:focus-visible {
+    outline: 3px solid var(--heist-rose);
+    outline-offset: 3px;
+}
+
+/*---already on the list: brown frame and a little label in the corner*/
+.chosen .card-image {
+    box-shadow: 0 0 0 3px var(--heist-accent), 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.card-badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.3rem 0.6rem;
+    background: var(--heist-accent);
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: 4px;
+}
+
+/*----ref prefers-reduced-motion, no zooming or lifting if animations are turned off https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    .card-image, .card-image img, .card-overlay {
+        transition: none;
+    }
+
+    .card-image:hover, .card-image:focus-visible {
+        transform: none;
+    }
+
+    .card-image:hover img, .card-image:focus-visible img {
+        transform: none;
+    }
+}
+
 .card-text {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.35rem;
-    padding-top: 0.9rem;
-    flex: 1;
+    gap: 0.4rem;
+    padding-top: 1rem;
 }
 
 /*---bold name with a short line under it*/
 .card-title {
     font-family: var(--heist-serif);
     font-weight: 700;
-    font-size: 1.05rem;
+    font-size: 1.15rem;
     line-height: 1.25;
-    padding-bottom: 0.45rem;
+    padding-bottom: 0.5rem;
     border-bottom: 1px solid var(--heist-line);
 }
 
 .card-price {
-    font-size: 0.875rem;
+    font-size: 0.9rem;
     color: var(--heist-muted);
     letter-spacing: 0.04em;
-}
-
-/*---fewer per row when the middle column gets narrow*/
-@media (max-width: 1399.98px) {
-    .artwork-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-}
-
-@media (max-width: 575.98px) {
-    .artwork-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-.card-action {
-    margin-top: auto;
-    padding-top: 0.9rem;
-}
-
-.card-action button {
-    width: 100%;
-}
-
-.on-list-btn {
-    background-color: var(--heist-text);
-    border-color: var(--heist-text);
-}
-
-.target-toggle .remove-hint {
-    display: none;
-}
-
-.target-toggle:hover .on-list {
-    display: none;
-}
-
-.target-toggle:hover .remove-hint {
-    display: inline;
 }
 
 .ledger {
