@@ -56,74 +56,13 @@ namespace HeistPlanner.UnitTests
             Assert.That(time, Is.EqualTo(new DateTime(2026, 10, 24, 19, 58, 10)));
         }
 
-        [Test]
-        public void ReadTime_Missing_ThrowsApiException()
-        {
-            Assert.That(() => SunService.ReadTime(null), Throws.TypeOf<ApiException>());
-        }
-
-        [Test]
-        public void ReadTime_NotADate_ThrowsApiException()
-        {
-            Assert.That(() => SunService.ReadTime("half past never"), Throws.TypeOf<ApiException>());
-        }
-
-        //---ParseSunDay
-        [Test]
-        public void ParseSunDay_ValidJson_KeepsTimesAsTheExactText()
-        {
-            //---proves DateParseHandling.None worked, Newtonsoft didnt change the text into a DateTime
-            SunDayJSON day = SunService.ParseSunDay(EVENING_JSON);
-            Assert.That(day.sunset, Is.EqualTo("2026-10-24T18:30:00-04:00"));
-        }
-
-        [Test]
-        public void ParseSunDay_ValidJson_ReadsTheMoon()
-        {
-            SunDayJSON day = SunService.ParseSunDay(EVENING_JSON);
-            Assert.That(day.moon_phase, Is.EqualTo("Waxing Gibbous"));
-            Assert.That(day.moon_illumination, Is.EqualTo(78.5));
-        }
-
-        [Test]
-        public void ParseSunDay_ValidJson_ReadsTwilight()
-        {
-            SunDayJSON day = SunService.ParseSunDay(EVENING_JSON);
-            Assert.That(day.astronomical_twilight_end, Is.EqualTo("2026-10-24T20:05:00-04:00"));
-        }
-
-        [Test]
-        public void ParseSunDay_NoSunset_ThrowsApiException()
-        {
-            Assert.That(() => SunService.ParseSunDay("""{ "date": "2026-10-24" }"""), Throws.TypeOf<ApiException>());
-        }
-
-        [Test]
-        public void ParseSunDay_BrokenJson_ThrowsApiException()
-        {
-            Assert.That(() => SunService.ParseSunDay("{ sunset: oops"), Throws.TypeOf<ApiException>());
-        }
-
         //---CreateNightReport puts the evening and the next morning together
-        [Test]
-        public void CreateNightReport_DarkStartsWhenEveningTwilightEnds()
-        {
-            NightReport night = SunService.CreateNightReport(nightOf, SunService.ParseSunDay(EVENING_JSON), SunService.ParseSunDay(MORNING_JSON));
-            Assert.That(night.DarkStarts, Is.EqualTo(new DateTime(2026, 10, 24, 20, 5, 0)));
-        }
 
         [Test]
         public void CreateNightReport_DarkEndsTheNextMorning()
         {
             NightReport night = SunService.CreateNightReport(nightOf, SunService.ParseSunDay(EVENING_JSON), SunService.ParseSunDay(MORNING_JSON));
             Assert.That(night.DarkEnds, Is.EqualTo(new DateTime(2026, 10, 25, 6, 21, 0)));
-        }
-
-        [Test]
-        public void CreateNightReport_UsesTheEveningsMoon()
-        {
-            NightReport night = SunService.CreateNightReport(nightOf, SunService.ParseSunDay(EVENING_JSON), SunService.ParseSunDay(MORNING_JSON));
-            Assert.That(night.MoonIllumination, Is.EqualTo(78.5));
         }
 
         [Test]

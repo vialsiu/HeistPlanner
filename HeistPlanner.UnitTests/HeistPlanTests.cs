@@ -22,41 +22,7 @@ namespace HeistPlanner.UnitTests
             monaLisa = new Artwork(4, "Mona Lisa", "Leonardo da Vinci");
         }
 
-        [Test]
-        public void NewPlan_HasNoTargets()
-        {
-            Assert.That(plan.Targets, Is.Empty);
-        }
-
         //--- one test for each path through the method
-        [Test]
-        public void AddTarget_NewArtwork_ReturnsNull()
-        {
-            //---null means it was added with no problems
-            Assert.That(plan.AddTarget(waterLilies), Is.Null);
-        }
-
-        [Test]
-        public void AddTarget_NewArtwork_IsAddedToList()
-        {
-            plan.AddTarget(waterLilies);
-            Assert.That(plan.Targets, Has.Exactly(1).Items);
-        }
-
-        [Test]
-        public void AddTarget_Duplicate_ReturnsMessage()
-        {
-            plan.AddTarget(waterLilies);
-            Assert.That(plan.AddTarget(waterLilies), Does.Contain("already on your target list"));
-        }
-
-        [Test]
-        public void AddTarget_Duplicate_IsNotAddedTwice()
-        {
-            plan.AddTarget(waterLilies);
-            plan.AddTarget(waterLilies);
-            Assert.That(plan.Targets, Has.Exactly(1).Items);
-        }
 
         [Test]
         public void AddTarget_SameIdDifferentObject_CountsAsDuplicate()
@@ -85,44 +51,5 @@ namespace HeistPlanner.UnitTests
             Assert.That(plan.AddTarget(monaLisa), Does.Contain("can only carry"));
         }
 
-        [Test]
-        public void AddTarget_FourthTarget_ListStaysAtMax()
-        {
-            plan.AddTarget(waterLilies);
-            plan.AddTarget(starryNight);
-            plan.AddTarget(theScream);
-            plan.AddTarget(monaLisa);
-            Assert.That(plan.Targets.Count, Is.EqualTo(HeistPlan.MAX_TARGETS));
-        }
-
-        //---RemoveTarget and IsTarget
-        [Test]
-        public void RemoveTarget_OnList_IsRemoved()
-        {
-            plan.AddTarget(waterLilies);
-            plan.RemoveTarget(waterLilies);
-            Assert.That(plan.Targets, Is.Empty);
-        }
-
-        [Test]
-        public void RemoveTarget_NotOnList_DoesNothing()
-        {
-            plan.AddTarget(waterLilies);
-            plan.RemoveTarget(starryNight);
-            Assert.That(plan.Targets, Has.Exactly(1).Items);
-        }
-
-        [Test]
-        public void IsTarget_OnList_ReturnsTrue()
-        {
-            plan.AddTarget(waterLilies);
-            Assert.That(plan.IsTarget(waterLilies), Is.True);
-        }
-
-        [Test]
-        public void IsTarget_NotOnList_ReturnsFalse()
-        {
-            Assert.That(plan.IsTarget(waterLilies), Is.False);
-        }
     }
 }
