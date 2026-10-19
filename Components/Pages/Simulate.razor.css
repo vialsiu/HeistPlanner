@@ -1,0 +1,255 @@
+/*---factor bars*/
+.factor-list {
+    list-style: none;
+    margin: 0;
+    padding: 1.2rem 1.4rem;
+    background: var(--heist-panel);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+}
+
+.factor {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr) 3rem;
+    gap: 1rem;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.factor-bar {
+    height: 10px;
+    background: #e3ddd8;
+}
+
+.factor-fill {
+    display: block;
+    height: 100%;
+}
+
+.factor.good .factor-fill {
+    background: var(--heist-good);
+}
+
+.factor.bad .factor-fill {
+    background: var(--heist-bad);
+}
+
+.factor-effect {
+    text-align: right;
+    font-family: var(--heist-serif);
+    font-weight: 700;
+}
+
+.factor.bad .factor-effect {
+    color: var(--heist-bad);
+}
+
+.empty-text {
+    color: var(--heist-muted);
+}
+
+/*---the result*/
+.result-header {
+    margin-top: 2.5rem;
+}
+
+.panel-label {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--heist-rose);
+}
+
+.outcome {
+    padding: 1.4rem;
+    color: #ffffff;
+}
+
+.outcome.good {
+    background: var(--heist-good);
+}
+
+.outcome.bad {
+    background: var(--heist-bad);
+}
+
+.outcome .panel-label {
+    color: #ffffff;
+    opacity: 0.8;
+}
+
+.outcome h3 {
+    font-size: 2.2rem;
+    margin: 0.2rem 0 0.4rem;
+    color: #ffffff;
+}
+
+.outcome p:last-child {
+    margin: 0;
+}
+
+/*---timeline of the night, a line down the left with a dot per step*/
+.story {
+    list-style: none;
+    margin: 1.5rem 0 0;
+    padding: 0 0 0 1.4rem;
+    border-left: 2px solid var(--heist-line);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+}
+
+.story li {
+    position: relative;
+    display: flex;
+    gap: 1rem;
+}
+
+.story li::before {
+    content: "";
+    position: absolute;
+    left: calc(-1.4rem - 6px);
+    top: 0.45rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--heist-accent);
+}
+
+.story li.bad::before {
+    background: var(--heist-bad);
+}
+
+.story li.bad {
+    color: var(--heist-bad);
+}
+
+.story-time {
+    flex: none;
+    width: 4.5rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--heist-muted);
+    padding-top: 0.15rem;
+}
+
+/*---loot split*/
+.loot {
+    margin-top: 1.75rem;
+    padding: 1.2rem 1.4rem;
+    background: var(--heist-panel);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.loot-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--heist-line);
+}
+
+.loot-row:last-child {
+    border-bottom: none;
+}
+
+.loot-total strong {
+    font-family: var(--heist-serif);
+    font-size: 1.3rem;
+}
+
+/*---summary (right column), same look as the verdict on the night page*/
+.summary {
+    background: var(--heist-panel);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem 1.4rem;
+}
+
+.summary-eyebrow {
+    margin: 0;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--heist-muted);
+}
+
+.summary h2 {
+    font-size: 2rem;
+    margin: 0.3rem 0 0.6rem;
+}
+
+.chance {
+    margin: 0;
+    font-family: var(--heist-serif);
+    font-size: 3.4rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--heist-accent);
+}
+
+.chance-label {
+    margin: 0.3rem 0 1rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--heist-muted);
+}
+
+.summary ul {
+    list-style: none;
+    margin: 0;
+    padding: 0.75rem 0 0;
+    border-top: 1px solid var(--heist-line);
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.summary li {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.mark {
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 0.85rem;
+    flex: none;
+}
+
+.good .mark {
+    background: var(--heist-good);
+}
+
+.bad .mark {
+    background: var(--heist-bad);
+}
+
+.run-button {
+    width: 100%;
+    margin-top: 1.4rem;
+}
+
+.run-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.next-link {
+    display: block;
+    text-align: center;
+    margin-top: 0.75rem;
+    text-decoration: none;
+}
