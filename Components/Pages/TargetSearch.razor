@@ -59,28 +59,25 @@
                         <div class="no-image">Image not on display</div>
                     }
 
-                    @*----styled like the little label next to a painting in a museum *@
-                    <div class="wall-label">
-                        <span class="label-artist">@artwork.Artist</span>
-                        <span class="label-title">@artwork.Title</span>
-                        <span class="label-meta">@artwork.DateDisplay</span>
-                        <span class="label-meta">@artwork.MediumDisplay</span>
-                        <span class="label-small">@artwork.Dimensions</span>
+                    @*---square painting with the name in bold and the made up value under it *@
+                    <div class="card-text">
+                        <span class="card-title">@artwork.Title</span>
+                        <span class="card-price">@HeistSimulator.FormatMoney(HeistSimulator.EstimateValue(artwork))</span>
+                    </div>
 
-                        <div class="card-action">
-                            @if (Plan.IsTarget(artwork))
-                            {
-                                //--- clicking again removes it, the button works as a toggle
-                                <button class="btn-heist on-list-btn target-toggle" @onclick="() => RemoveTarget(artwork)">
-                                    <span class="on-list">✓ On the list</span>
-                                    <span class="remove-hint">✕ Remove</span>
-                                </button>
-                            }
-                            else
-                            {
-                                <button class="btn-heist-outline" @onclick="() => AddTarget(artwork)">Add to the list</button>
-                            }
-                        </div>
+                    <div class="card-action">
+                        @if (Plan.IsTarget(artwork))
+                        {
+                            //--- clicking again removes it, the button works as a toggle
+                            <button class="btn-heist on-list-btn target-toggle" @onclick="() => RemoveTarget(artwork)">
+                                <span class="on-list">✓ On the list</span>
+                                <span class="remove-hint">✕ Remove</span>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn-heist-outline" @onclick="() => AddTarget(artwork)">Add to the list</button>
+                        }
                     </div>
                 </div>
             }

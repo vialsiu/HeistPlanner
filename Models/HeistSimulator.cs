@@ -32,6 +32,13 @@
             return total;
         }
 
+        //---the museum is in the US so the made up values are in dollars, N0 = commas and no decimals
+        //----ref standard numeric format strings https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
+        public static string FormatMoney(decimal amount)
+        {
+            return "$" + amount.ToString("N0");
+        }
+
         //---e.g. 45% of 1,000,000 = 450,000
         public static decimal GetCrewCut(decimal lootValue, decimal cutPercentage)
         {

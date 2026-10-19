@@ -93,20 +93,20 @@
                         {
                             <div class="loot-row">
                                 <span>@artwork.Title</span>
-                                <strong>@FormatMoney(HeistSimulator.EstimateValue(artwork))</strong>
+                                <strong>@HeistSimulator.FormatMoney(HeistSimulator.EstimateValue(artwork))</strong>
                             </div>
                         }
                         <div class="loot-row loot-total">
                             <span>Total</span>
-                            <strong>@FormatMoney(result.LootValue)</strong>
+                            <strong>@HeistSimulator.FormatMoney(result.LootValue)</strong>
                         </div>
                         <div class="loot-row">
                             <span>Crew's cut (@Plan.GetTotalCutPercentage()%)</span>
-                            <strong>- @FormatMoney(result.CrewCut)</strong>
+                            <strong>- @HeistSimulator.FormatMoney(result.CrewCut)</strong>
                         </div>
                         <div class="loot-row loot-total">
                             <span>You take home</span>
-                            <strong>@FormatMoney(result.TakeHome)</strong>
+                            <strong>@HeistSimulator.FormatMoney(result.TakeHome)</strong>
                         </div>
                     </div>
                 }
@@ -120,8 +120,8 @@
             <p class="summary-eyebrow">The plan</p>
             <h2>Simulate</h2>
 
-            @* ----no targets yet = nothing to work out, so I will put a dash there*@
-            <p class="chance">@(Plan.Targets.Count == 0 ? "–" : chance + "%")</p>            <p class="chance-label">Chance of getting away</p>
+            <p class="chance">@chance%</p>
+            <p class="chance-label">Chance of getting away</p>
 
             <ul>
                 <li class="@(Plan.Targets.Count > 0 ? "good" : "bad")">
@@ -186,12 +186,5 @@
             return 0;
         }
         return (int)Math.Round(Math.Abs(factor.Effect) / Math.Abs(biggest.Effect) * 100);
-    }
-
-    //---the museum is in the US so the made up values are in dollars, N0 = commas and no decimals
-    //----ref standard numeric format strings https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings
-    private string FormatMoney(decimal amount)
-    {
-        return "$" + amount.ToString("N0");
     }
 }

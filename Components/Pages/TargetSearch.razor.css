@@ -53,68 +53,76 @@
     color: var(--heist-muted);
 }
 
-/*---artwork cards*/
+/*---artwork cards, 4 square paintings in a row with the text underneath*/
 .artwork-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-    gap: 1.75rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2rem 1.5rem;
 }
 
 .artwork-card {
-    background: var(--heist-panel);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     display: flex;
     flex-direction: column;
+    text-align: center;
 }
 
-.artwork-card img {
+/*----ref aspect-ratio keeps the picture square whatever width the column is https://developer.mozilla.org/en-US/docs/Web/CSS/aspect-ratio */
+.artwork-card img, .no-image {
     width: 100%;
-    height: 230px;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
     display: block;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
 }
 
 .no-image {
-    height: 230px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--heist-panel-2);
     color: var(--heist-muted);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
 
-/*---museum wall label*/
-.wall-label {
-    padding: 1rem 1.1rem 1.1rem;
+.card-text {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    align-items: center;
+    gap: 0.35rem;
+    padding-top: 0.9rem;
     flex: 1;
 }
 
-.label-artist {
-    font-weight: 700;
-    font-size: 0.95rem;
-}
-
-.label-title {
+/*---bold name with a short line under it*/
+.card-title {
     font-family: var(--heist-serif);
-    font-style: italic;
-    font-size: 1.2rem;
+    font-weight: 700;
+    font-size: 1.05rem;
     line-height: 1.25;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid var(--heist-line);
 }
 
-.label-meta {
+.card-price {
     font-size: 0.875rem;
     color: var(--heist-muted);
+    letter-spacing: 0.04em;
 }
 
-.label-small {
-    font-size: 0.8rem;
-    color: var(--heist-muted);
+/*---fewer per row when the middle column gets narrow*/
+@media (max-width: 1399.98px) {
+    .artwork-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 575.98px) {
+    .artwork-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 .card-action {
@@ -246,6 +254,6 @@
 }
 
 
-    .list-col {
-        position: static;
-    }
+.list-col {
+    position: static;
+}
