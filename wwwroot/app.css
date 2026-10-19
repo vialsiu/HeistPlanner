@@ -361,3 +361,13 @@ h1:focus {
     text-transform: uppercase;
     color: var(--heist-muted);
 }
+
+
+/*---simulate page painting with a dark red tint like alarm lights*/
+.hero-simulate {
+    background-image: url('images/hero-3.jpg');
+}
+
+.hero-simulate .hero-overlay {
+    background: rgba(45, 12, 8, 0.58);
+}

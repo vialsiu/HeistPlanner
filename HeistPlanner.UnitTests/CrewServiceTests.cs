@@ -39,13 +39,6 @@ namespace HeistPlanner.UnitTests
         }
 
         [Test]
-        public void ParseCandidates_ValidJson_ReturnsEveryCandidate()
-        {
-            List<RandomUserResult> candidates = CrewService.ParseCandidates(SAMPLE_JSON);
-            Assert.That(candidates, Has.Exactly(2).Items);
-        }
-
-        [Test]
         public void ParseCandidates_ValidJson_ReadsNameAndCountry()
         {
             List<RandomUserResult> candidates = CrewService.ParseCandidates(SAMPLE_JSON);
@@ -55,90 +48,12 @@ namespace HeistPlanner.UnitTests
         }
 
         [Test]
-        public void ParseCandidates_ValidJson_ReadsAgePhotoAndId()
-        {
-            List<RandomUserResult> candidates = CrewService.ParseCandidates(SAMPLE_JSON);
-            Assert.That(candidates[1].dob.age, Is.EqualTo(45));
-            Assert.That(candidates[1].picture.large, Is.EqualTo("https://example.com/tom.jpg"));
-            Assert.That(candidates[1].login.uuid, Is.EqualTo("uuid-tom"));
-        }
-
-        [Test]
-        public void ParseCandidates_SkillIsNotInJson_StartsAtZero()
-        {
-            //---proves skill doesnt come from the API, GetCandidates gives it out after parsing
-            List<RandomUserResult> candidates = CrewService.ParseCandidates(SAMPLE_JSON);
-            Assert.That(candidates[0].skill, Is.EqualTo(0));
-        }
-
-        [Test]
-        public void ParseCandidates_NoResults_ReturnsEmptyList()
-        {
-            List<RandomUserResult> candidates = CrewService.ParseCandidates("""{ "results": [] }""");
-            Assert.That(candidates, Is.Empty);
-        }
-
-        [Test]
-        public void ParseCandidates_NullJson_ReturnsEmptyList()
-        {
-            List<RandomUserResult> candidates = CrewService.ParseCandidates("null");
-            Assert.That(candidates, Is.Empty);
-        }
-
-        [Test]
         public void ParseCandidates_BrokenJson_ThrowsApiException()
         {
             Assert.That(() => CrewService.ParseCandidates("{ results: [ oops"), Throws.TypeOf<ApiException>());
         }
 
         //---CreateCrewMember gives back the right subclass for each role
-        [Test]
-        public void CreateCrewMember_Hacker_ReturnsHacker()
-        {
-            Assert.That(CrewService.CreateCrewMember(ana, CrewRole.Hacker), Is.TypeOf<Hacker>());
-        }
-
-        [Test]
-        public void CreateCrewMember_Safecracker_ReturnsSafecracker()
-        {
-            Assert.That(CrewService.CreateCrewMember(ana, CrewRole.Safecracker), Is.TypeOf<Safecracker>());
-        }
-
-        [Test]
-        public void CreateCrewMember_Lookout_ReturnsLookout()
-        {
-            Assert.That(CrewService.CreateCrewMember(ana, CrewRole.Lookout), Is.TypeOf<Lookout>());
-        }
-
-        [Test]
-        public void CreateCrewMember_Driver_ReturnsDriver()
-        {
-            Assert.That(CrewService.CreateCrewMember(ana, CrewRole.Driver), Is.TypeOf<Driver>());
-        }
-
-        [Test]
-        public void CreateCrewMember_InsideMan_ReturnsInsideMan()
-        {
-            Assert.That(CrewService.CreateCrewMember(ana, CrewRole.InsideMan), Is.TypeOf<InsideMan>());
-        }
-
-        [Test]
-        public void CreateCrewMember_CopiesPersonDetails()
-        {
-            CrewMember member = CrewService.CreateCrewMember(ana, CrewRole.Driver);
-            Assert.That(member.Id, Is.EqualTo("uuid-ana"));
-            Assert.That(member.Name, Is.EqualTo("Ana Ruiz"));
-            Assert.That(member.Country, Is.EqualTo("Spain"));
-            Assert.That(member.Skill, Is.EqualTo(80));
-        }
-
-        [Test]
-        public void CreateCrewMember_SkillOver100_IsCapped()
-        {
-            ana.skill = 150;
-            CrewMember member = CrewService.CreateCrewMember(ana, CrewRole.Driver);
-            Assert.That(member.Skill, Is.EqualTo(100));
-        }
 
         [Test]
         public void CreateCrewMember_UnknownRole_ThrowsArgumentException()

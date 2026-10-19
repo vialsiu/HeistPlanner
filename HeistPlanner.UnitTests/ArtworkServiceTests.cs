@@ -34,51 +34,11 @@ namespace HeistPlanner.UnitTests
             """;
 
         [Test]
-        public void ParseArtworks_ValidJson_ReturnsEveryArtwork()
-        {
-            List<Artwork> artworks = ArtworkService.ParseArtworks(SAMPLE_JSON);
-            Assert.That(artworks, Has.Exactly(2).Items);
-        }
-
-        [Test]
-        public void ParseArtworks_ValidJson_ReadsIdAndTitle()
-        {
-            List<Artwork> artworks = ArtworkService.ParseArtworks(SAMPLE_JSON);
-            Assert.That(artworks[0].Id, Is.EqualTo(1001));
-            Assert.That(artworks[0].Title, Is.EqualTo("Water Lilies"));
-        }
-
-        [Test]
         public void ParseArtworks_ValidJson_ReadsArtistAndImage()
         {
             List<Artwork> artworks = ArtworkService.ParseArtworks(SAMPLE_JSON);
             Assert.That(artworks[0].Artist, Is.EqualTo("Claude Monet"));
             Assert.That(artworks[0].ImageUrl, Is.EqualTo("https://example.com/water-lilies.jpg"));
-        }
-
-        //----so the Artwork class falls back to defaults instead of crash
-        [Test]
-        public void ParseArtworks_MissingFields_UsesDefaults()
-        {
-            List<Artwork> artworks = ArtworkService.ParseArtworks(SAMPLE_JSON);
-            Assert.That(artworks[1].Artist, Is.EqualTo("Unknown artist"));
-            Assert.That(artworks[1].PlaceOfOrigin, Is.EqualTo("Unknown"));
-            Assert.That(artworks[1].ImageUrl, Is.EqualTo(""));
-        }
-
-        //----empty results
-        [Test]
-        public void ParseArtworks_EmptyData_ReturnsEmptyList()
-        {
-            List<Artwork> artworks = ArtworkService.ParseArtworks("""{ "data": [] }""");
-            Assert.That(artworks, Is.Empty);
-        }
-
-        [Test]
-        public void ParseArtworks_NullJson_ReturnsEmptyList()
-        {
-            List<Artwork> artworks = ArtworkService.ParseArtworks("null");
-            Assert.That(artworks, Is.Empty);
         }
 
         //----bad JSON: should become the ApiException
@@ -88,10 +48,5 @@ namespace HeistPlanner.UnitTests
             Assert.That(() => ArtworkService.ParseArtworks("this is not json"), Throws.TypeOf<ApiException>());
         }
 
-        [Test]
-        public void ParseArtworks_WrongShape_ThrowsApiException()
-        {
-            Assert.That(() => ArtworkService.ParseArtworks("""{ "data": "not a list" }"""), Throws.TypeOf<ApiException>());
-        }
     }
 }

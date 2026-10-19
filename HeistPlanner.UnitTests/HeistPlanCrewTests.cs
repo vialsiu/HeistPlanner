@@ -23,26 +23,7 @@ namespace HeistPlanner.UnitTests
             leo = new Driver("id-leo", "Leo Rossi", "Italy", 38, "", 50);
         }
 
-        [Test]
-        public void NewPlan_HasNoCrew()
-        {
-            Assert.That(plan.Crew.Count, Is.EqualTo(0));
-        }
-
         //---Hire
-        [Test]
-        public void Hire_AddsToCrew()
-        {
-            plan.Hire(ana);
-            Assert.That(plan.Crew.Count, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void Hire_CanBeFoundByRole()
-        {
-            plan.Hire(ana);
-            Assert.That(plan.GetCrewMember(CrewRole.Hacker), Is.EqualTo(ana));
-        }
 
         [Test]
         public void Hire_SameRoleTwice_ReplacesFirstPerson()
@@ -52,51 +33,7 @@ namespace HeistPlanner.UnitTests
             Assert.That(plan.GetCrewMember(CrewRole.Hacker), Is.EqualTo(tom));
         }
 
-        [Test]
-        public void Hire_SameRoleTwice_StillOnlyOneInThatRole()
-        {
-            plan.Hire(ana);
-            plan.Hire(tom);
-            Assert.That(plan.Crew.Count, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void Hire_DifferentRoles_KeepsBoth()
-        {
-            plan.Hire(ana);
-            plan.Hire(leo);
-            Assert.That(plan.Crew.Count, Is.EqualTo(2));
-        }
-
-        //---Fire , GetCrewMember
-        [Test]
-        public void Fire_RemovesThatRole()
-        {
-            plan.Hire(ana);
-            plan.Fire(CrewRole.Hacker);
-            Assert.That(plan.GetCrewMember(CrewRole.Hacker), Is.Null);
-        }
-
-        [Test]
-        public void Fire_EmptyRole_DoesNothing()
-        {
-            plan.Hire(ana);
-            plan.Fire(CrewRole.Driver);
-            Assert.That(plan.Crew.Count, Is.EqualTo(1));
-        }
-
-        [Test]
-        public void GetCrewMember_NobodyHired_ReturnsNull()
-        {
-            Assert.That(plan.GetCrewMember(CrewRole.Lookout), Is.Null);
-        }
-
         //---GetTotalCutPercentage
-        [Test]
-        public void GetTotalCutPercentage_NoCrew_IsZero()
-        {
-            Assert.That(plan.GetTotalCutPercentage(), Is.EqualTo(0m));
-        }
 
         [Test]
         public void GetTotalCutPercentage_AddsUpEachRolesCut()

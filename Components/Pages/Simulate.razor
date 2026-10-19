@@ -1,0 +1,190 @@
+@page "/simulate"
+@inject HeistPlan Plan
+
+<PageTitle>Simulate - Heist Planner</PageTitle>
+
+@* ---painting band with a red tint like alarm lights (styles in app.css) *@
+<section class="hero hero-tall hero-simulate">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <p class="hero-eyebrow">@Museum.NAME · Cleveland, Ohio</p>
+        <h1>Run<br/>the<br/>Heist</h1>
+        <a href="#simulate" class="hero-link">The odds, the roll and the night itself</a>
+    </div>
+</section>
+
+@* ---the factors and chance get worked out again every time the page draws, so they always match the plan *@
+@{
+    List<Factor> factors = SuccessCalculator.GetFactors(Plan);
+    double chance = SuccessCalculator.GetChance(factors);
+}
+
+@* ---3 columns: steps on the left, the odds and the night in the middle, the plan summary on the right *@
+<div class="page-layout">
+
+    <aside class="side-col steps-col">
+        <StepsPanel/>
+    </aside>
+
+    <section class="simulate-main" id="simulate">
+        @if (Plan.Targets.Count == 0)
+        {
+            <div class="section-header">
+                <h2>Nothing to steal yet</h2>
+            </div>
+            <p class="empty-text">Pick at least one piece on the <a href="">Targets</a> page before running the heist.</p>
+        }
+        else
+        {
+            <div class="section-header">
+                <h2>The odds</h2>
+                <p class="section-count">Biggest effect first</p>
+            </div>
+
+            @* ---one bar per factor, green helps and red hurts, the longest bar is the biggest effect *@
+            <ul class="factor-list">
+                @foreach (Factor factor in factors)
+                {
+                    <li class="factor @(factor.IsPositive ? "good" : "bad")">
+                        <span class="factor-label">@factor.Label</span>
+                        <span class="factor-bar">
+                            <span class="factor-fill" style="width: @(GetBarWidth(factor, factors[0]))%"></span>
+                        </span>
+                        <span class="factor-effect">@(factor.IsPositive ? "+" : "")@factor.Effect</span>
+                    </li>
+                }
+            </ul>
+
+            @if (errorMessage != null)
+            {
+                <p class="text-danger">@errorMessage</p>
+            }
+
+            @if (result != null)
+            {
+                <div class="section-header result-header">
+                    <h2>The night itself</h2>
+                    <p class="section-count">Rolled @result.Roll against @result.Chance%</p>
+                </div>
+
+                <div class="outcome @(result.Success ? "good" : "bad")">
+                    <p class="panel-label">Outcome</p>
+                    <h3>@(result.Success ? "Clean getaway" : "Busted")</h3>
+                    <p>@(result.Success ? "The roll came in under the chance." : "The roll went over the chance.")</p>
+                </div>
+
+                @* ---the story of the night, already sorted by time in HeistSimulator *@
+                <ol class="story">
+                    @foreach (TimelineEvent step in result.Timeline)
+                    {
+                        <li class="@(step.IsBad ? "bad" : "")">
+                            <span class="story-time">@step.Time.ToString("h:mmtt")</span>
+                            <span>@step.Text</span>
+                        </li>
+                    }
+                </ol>
+
+                @* ----no loot if they got caught *@
+                @if (result.Success)
+                {
+                    <div class="loot">
+                        <p class="panel-label">The loot</p>
+                        @foreach (Artwork artwork in Plan.Targets)
+                        {
+                            <div class="loot-row">
+                                <span>@artwork.Title</span>
+                                <strong>@HeistSimulator.FormatMoney(HeistSimulator.EstimateValue(artwork))</strong>
+                            </div>
+                        }
+                        <div class="loot-row loot-total">
+                            <span>Total</span>
+                            <strong>@HeistSimulator.FormatMoney(result.LootValue)</strong>
+                        </div>
+                        <div class="loot-row">
+                            <span>Crew's cut (@Plan.GetTotalCutPercentage()%)</span>
+                            <strong>- @HeistSimulator.FormatMoney(result.CrewCut)</strong>
+                        </div>
+                        <div class="loot-row loot-total">
+                            <span>You take home</span>
+                            <strong>@HeistSimulator.FormatMoney(result.TakeHome)</strong>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    </section>
+
+    @* ---right column: quick look at the whole plan and the big button *@
+    <aside class="side-col">
+        <div class="summary">
+            <p class="summary-eyebrow">The plan</p>
+            <h2>Simulate</h2>
+
+            <p class="chance">@chance%</p>
+            <p class="chance-label">Chance of getting away</p>
+
+            <ul>
+                <li class="@(Plan.Targets.Count > 0 ? "good" : "bad")">
+                    <span class="mark">@(Plan.Targets.Count > 0 ? "✓" : "✕")</span>
+                    <span>@Plan.Targets.Count of @HeistPlan.MAX_TARGETS targets</span>
+                </li>
+                <li class="@(Plan.Crew.Count == roleCount ? "good" : "bad")">
+                    <span class="mark">@(Plan.Crew.Count == roleCount ? "✓" : "✕")</span>
+                    <span>@Plan.Crew.Count of @roleCount crew hired</span>
+                </li>
+                <li class="@(Plan.GoTime != null ? "good" : "bad")">
+                    <span class="mark">@(Plan.GoTime != null ? "✓" : "✕")</span>
+                    <span>@(Plan.GoTime != null ? Plan.GoTime.Value.ToString("ddd d MMM · h:mmtt") : "Night not checked")</span>
+                </li>
+            </ul>
+
+            <button class="btn-heist run-button" @onclick="RunHeist" disabled="@(Plan.Targets.Count == 0)">
+                @(result == null ? "Run the heist" : "Run it again")
+            </button>
+
+            <a href="night" class="btn-heist-outline next-link">← Back to the night</a>
+        </div>
+    </aside>
+
+</div>
+
+@code {
+    private HeistResult? result;
+    private string? errorMessage;
+
+    //----ref Enum.GetValues gives every value in the enum so this stays right if a role is ever added https://learn.microsoft.com/en-us/dotnet/api/system.enum.getvalues
+    private int roleCount = Enum.GetValues<CrewRole>().Length;
+
+    private void RunHeist()
+    {
+        errorMessage = null;
+
+        //---the button is disabled with no targets but check again anyway
+        if (Plan.Targets.Count == 0)
+        {
+            errorMessage = "Pick at least one target first.";
+            return;
+        }
+
+        try
+        {
+            //---the page rolls the dice and passes the number in, so the tests can pass in their own
+            int roll = HeistSimulator.RollDice();
+            result = HeistSimulator.Run(Plan, roll, DateTime.Now);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Something went wrong running the heist: " + ex.Message;
+        }
+    }
+
+    //---bar length compared to the biggest factor (the list is sorted so thats always the first one)
+    private int GetBarWidth(Factor factor, Factor biggest)
+    {
+        if (biggest.Effect == 0)
+        {
+            return 0;
+        }
+        return (int)Math.Round(Math.Abs(factor.Effect) / Math.Abs(biggest.Effect) * 100);
+    }
+}
