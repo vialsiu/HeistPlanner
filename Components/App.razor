@@ -23,6 +23,16 @@
 <Routes @rendermode="InteractiveServer"/>
 <ReconnectModal/>
 <script src="@Assets["_framework/blazor.web.js"]"></script>
+@* ---scrolls so the bottom of the painting band sits right at the top of the screen, MainLayout calls this after you switch pages
+----ref getBoundingClientRect gives where the element is on the screen, adding scrollY turns it into a place on the whole page https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect *@
+<script>
+    window.heistScrollPastHero = function () {
+        var hero = document.querySelector('.hero');
+        if (hero) {
+            window.scrollTo(0, hero.getBoundingClientRect().bottom + window.scrollY);
+        }
+    };
+</script>
 </body>
 
 </html>

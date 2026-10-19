@@ -1,4 +1,9 @@
 ﻿@inherits LayoutComponentBase
+@* ----ref LocationChanged runs every time you go to another page https://learn.microsoft.com/en-us/aspnet/core/blazor/fundamentals/navigation#handleprevent-location-changes *@
+@inject NavigationManager Navigation
+@* ----ref IJSRuntime lets C# call a javascript function https://learn.microsoft.com/en-us/aspnet/core/blazor/javascript-interoperability/call-javascript-from-dotnet *@
+@inject IJSRuntime JS
+@implements IDisposable
 
 <div class="page">
     <NavMenu/>
@@ -27,3 +32,34 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code {
+    private bool switchedPage;
+
+    protected override void OnInitialized()
+    {
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+
+    //---only when you switch pages, so the very first time the site opens you still see the big painting
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        switchedPage = true;
+    }
+
+    //---waits until the new page is drawn, otherwise the painting band isnt there yet to scroll past
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (switchedPage)
+        {
+            switchedPage = false;
+            await JS.InvokeVoidAsync("heistScrollPastHero");
+        }
+    }
+
+    //---stop listening when the layout is gone so it doesnt leak
+    public void Dispose()
+    {
+        Navigation.LocationChanged -= OnLocationChanged;
+    }
+}
