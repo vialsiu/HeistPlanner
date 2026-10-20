@@ -20,7 +20,7 @@
 
 .factor-bar {
     height: 10px;
-    background: #e3ddd8;
+    background: var(--heist-panel-2);
 }
 
 .factor-fill {
@@ -64,28 +64,34 @@
     color: var(--heist-rose);
 }
 
+/*---dark box with a thin coloured frame, green if they got away and red if they got caught*/
 .outcome {
     padding: 1.4rem;
-    color: #ffffff;
+    background: var(--heist-panel-2);
+    border: 1px solid var(--heist-line);
+    color: var(--heist-text);
 }
 
 .outcome.good {
-    background: var(--heist-good);
+    border-color: var(--heist-good);
 }
 
 .outcome.bad {
-    background: var(--heist-bad);
+    border-color: var(--heist-bad);
 }
 
-.outcome .panel-label {
-    color: #ffffff;
-    opacity: 0.8;
+.outcome.good .panel-label {
+    color: var(--heist-good);
+}
+
+.outcome.bad .panel-label {
+    color: var(--heist-bad);
 }
 
 .outcome h3 {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
     margin: 0.2rem 0 0.4rem;
-    color: #ffffff;
+    color: var(--heist-heading);
 }
 
 .outcome p:last-child {
@@ -233,7 +239,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #ffffff;
+    color: var(--heist-on-gold);
     font-size: 0.85rem;
     flex: none;
 }

@@ -19,7 +19,7 @@
     top: 0;
     pointer-events: auto;
     width: 100%;
-    background: rgba(40, 37, 34, 0.96);
+    background: rgb(110 94 93 / 0.54);
     border-bottom: 1px solid var(--heist-line);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
     padding: 0.9rem 3rem;
