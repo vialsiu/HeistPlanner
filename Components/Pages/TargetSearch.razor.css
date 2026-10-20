@@ -53,27 +53,6 @@
     color: var(--heist-muted);
 }
 
-/*---the targets page gets a wider layout than the other pages so the paintings can be bigger
-----same full width trick as the hero, but it stops at 1800px on very big screens */
-.targets-layout {
-    grid-template-columns: minmax(170px, 0.8fr) minmax(0, 4fr) minmax(250px, 1.1fr);
-    margin-left: calc(50% - min(900px, 50vw - 1.5rem));
-    margin-right: calc(50% - min(900px, 50vw - 1.5rem));
-}
-
-/*---the column sizes above beat the ones in app.css, so the smaller screen versions are repeated here*/
-@media (max-width: 1099.98px) {
-    .targets-layout {
-        grid-template-columns: minmax(0, 3fr) minmax(250px, 1.2fr);
-    }
-}
-
-@media (max-width: 767.98px) {
-    .targets-layout {
-        grid-template-columns: 1fr;
-    }
-}
-
 /*---artwork cards, big square paintings with the text underneath*/
 .artwork-grid {
     display: grid;
@@ -321,6 +300,6 @@
 }
 
 
-.list-col {
-    position: static;
-}
+    .list-col {
+        position: static;
+    }
