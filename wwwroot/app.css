@@ -195,11 +195,6 @@ h1:focus {
     text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-/*---the titles have <br/> in them, hiding them puts the title on one line*/
-.hero h1 br {
-    display: none;
-}
-
 /*---short gold line under the title*/
 .hero h1::after {
     content: "";
@@ -235,11 +230,10 @@ h1:focus {
 }
 
 .slide {
-    flex: 0 0 25%;          /*---each painting is a quarter of the strip = the full height of the band*/
+    flex: 0 0 25%;     
     width: 100%;
     background-size: cover;
-    background-position: center 30%;   /*---show more of the top of the painting so faces arent hidden behind the nav*/
-}
+    background-position: center 12%;}
 
 .slide-1 {
     background-image: url('images/hero-1.jpg');
