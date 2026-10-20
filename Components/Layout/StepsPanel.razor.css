@@ -53,8 +53,3 @@
     font-size: 0.8rem;
     color: var(--heist-muted);
 }
-
-.upcoming .step-name {
-    font-weight: 400;
-    color: var(--heist-muted);
-}

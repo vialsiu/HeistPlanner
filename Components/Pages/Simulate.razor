@@ -73,43 +73,46 @@
                     <p>@(result.Success ? "The roll came in under the chance." : "The roll went over the chance.")</p>
                 </div>
 
-                @* ---the story of the night, already sorted by time in HeistSimulator *@
-                <ol class="story">
-                    @foreach (TimelineEvent step in result.Timeline)
-                    {
-                        <li class="@(step.IsBad ? "bad" : "")">
-                            <span class="story-time">@step.Time.ToString("h:mmtt")</span>
-                            <span>@step.Text</span>
-                        </li>
-                    }
-                </ol>
-
-                @* ----no loot if they got caught *@
-                @if (result.Success)
-                {
-                    <div class="loot">
-                        <p class="panel-label">The loot</p>
-                        @foreach (Artwork artwork in Plan.Targets)
+                @* ---timeline on the left and the loot on the right, if they got caught the timeline takes the whole width *@
+                <div class="result-grid">
+                    @* ---the story of the night, already sorted by time in HeistSimulator *@
+                    <ol class="story">
+                        @foreach (TimelineEvent step in result.Timeline)
                         {
-                            <div class="loot-row">
-                                <span>@artwork.Title</span>
-                                <strong>@HeistSimulator.FormatMoney(HeistSimulator.EstimateValue(artwork))</strong>
-                            </div>
+                            <li class="@(step.IsBad ? "bad" : "")">
+                                <span class="story-time">@step.Time.ToString("h:mmtt")</span>
+                                <span>@step.Text</span>
+                            </li>
                         }
-                        <div class="loot-row loot-total">
-                            <span>Total</span>
-                            <strong>@HeistSimulator.FormatMoney(result.LootValue)</strong>
+                    </ol>
+
+                    @* ----no loot if they got caught *@
+                    @if (result.Success)
+                    {
+                        <div class="loot">
+                            <p class="panel-label">The loot</p>
+                            @foreach (Artwork artwork in Plan.Targets)
+                            {
+                                <div class="loot-row">
+                                    <span>@artwork.Title</span>
+                                    <strong>@HeistSimulator.FormatMoney(HeistSimulator.EstimateValue(artwork))</strong>
+                                </div>
+                            }
+                            <div class="loot-row loot-total">
+                                <span>Total</span>
+                                <strong>@HeistSimulator.FormatMoney(result.LootValue)</strong>
+                            </div>
+                            <div class="loot-row">
+                                <span>Crew's cut (@Plan.GetTotalCutPercentage()%)</span>
+                                <strong>- @HeistSimulator.FormatMoney(result.CrewCut)</strong>
+                            </div>
+                            <div class="loot-row loot-total">
+                                <span>You take home</span>
+                                <strong>@HeistSimulator.FormatMoney(result.TakeHome)</strong>
+                            </div>
                         </div>
-                        <div class="loot-row">
-                            <span>Crew's cut (@Plan.GetTotalCutPercentage()%)</span>
-                            <strong>- @HeistSimulator.FormatMoney(result.CrewCut)</strong>
-                        </div>
-                        <div class="loot-row loot-total">
-                            <span>You take home</span>
-                            <strong>@HeistSimulator.FormatMoney(result.TakeHome)</strong>
-                        </div>
-                    </div>
-                }
+                    }
+                </div>
             }
         }
     </section>

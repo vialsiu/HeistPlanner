@@ -47,37 +47,35 @@
         <div class="artwork-grid">
             @foreach (var artwork in artworks)
             {
-                <div class="artwork-card">
-                    @if (artwork.ImageUrl != "" && !failedImages.Contains(artwork.Id))
-                    {
-                        @*----reference for blazor @onerror event https://learn.microsoft.com/en-us/aspnet/core/blazor/components/event-handling *@
-                        <img src="@artwork.ImageUrl" alt="@artwork.Title" @onerror="() => ImageFailed(artwork)"/>
-                    }
-                    else
-                    {
-                        //-- when there's no image
-                        <div class="no-image">Image not on display</div>
-                    }
+                bool chosen = Plan.IsTarget(artwork);
+                <div class="artwork-card @(chosen ? "chosen" : "")">
+                    @*---the painting itself is the button, click to add it and click again to take it off the list *@
+                    @*----ref aria-pressed tells screen readers the button is switched on or off https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-pressed *@
+                    <button class="card-image" @onclick="() => ToggleTarget(artwork)" aria-pressed="@(chosen ? "true" : "false")" aria-label="@(chosen ? "Remove" : "Add") @artwork.Title">
+                        @if (artwork.ImageUrl != "" && !failedImages.Contains(artwork.Id))
+                        {
+                            @*----reference for blazor @onerror event https://learn.microsoft.com/en-us/aspnet/core/blazor/components/event-handling *@
+                            <img src="@artwork.ImageUrl" alt="" @onerror="() => ImageFailed(artwork)"/>
+                        }
+                        else
+                        {
+                            //-- when there's no image
+                            <span class="no-image">Image not on display</span>
+                        }
+
+                        @if (chosen)
+                        {
+                            <span class="card-badge">✓ On the list</span>
+                        }
+
+                        @*---only shows when you hover over the painting *@
+                        <span class="card-overlay">@(chosen ? "✕ Remove from the list" : "+ Add to the list")</span>
+                    </button>
 
                     @*---square painting with the name in bold and the made up value under it *@
                     <div class="card-text">
                         <span class="card-title">@artwork.Title</span>
                         <span class="card-price">@HeistSimulator.FormatMoney(HeistSimulator.EstimateValue(artwork))</span>
-                    </div>
-
-                    <div class="card-action">
-                        @if (Plan.IsTarget(artwork))
-                        {
-                            //--- clicking again removes it, the button works as a toggle
-                            <button class="btn-heist on-list-btn target-toggle" @onclick="() => RemoveTarget(artwork)">
-                                <span class="on-list">✓ On the list</span>
-                                <span class="remove-hint">✕ Remove</span>
-                            </button>
-                        }
-                        else
-                        {
-                            <button class="btn-heist-outline" @onclick="() => AddTarget(artwork)">Add to the list</button>
-                        }
                     </div>
                 </div>
             }
@@ -186,6 +184,19 @@
         if (!failedImages.Contains(artwork.Id))
         {
             failedImages.Add(artwork.Id);
+        }
+    }
+
+    //---clicking the painting adds it, clicking it again takes it off
+    private void ToggleTarget(Artwork artwork)
+    {
+        if (Plan.IsTarget(artwork))
+        {
+            RemoveTarget(artwork);
+        }
+        else
+        {
+            AddTarget(artwork);
         }
     }
 

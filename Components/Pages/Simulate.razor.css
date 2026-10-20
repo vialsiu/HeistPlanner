@@ -92,10 +92,19 @@
     margin: 0;
 }
 
+/*---timeline and loot next to each other, auto-fit drops the loot underneath when theres no room*/
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.75rem 2.5rem;
+    align-items: start;
+    margin-top: 1.5rem;
+}
+
 /*---timeline of the night, a line down the left with a dot per step*/
 .story {
     list-style: none;
-    margin: 1.5rem 0 0;
+    margin: 0;
     padding: 0 0 0 1.4rem;
     border-left: 2px solid var(--heist-line);
     display: flex;
@@ -140,7 +149,7 @@
 
 /*---loot split*/
 .loot {
-    margin-top: 1.75rem;
+    margin: 0;
     padding: 1.2rem 1.4rem;
     background: var(--heist-panel);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);

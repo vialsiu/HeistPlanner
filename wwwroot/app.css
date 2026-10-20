@@ -1,15 +1,17 @@
 
 :root {
-    --heist-bg: #dcdad8;  
-    --heist-panel: #efe9e9;     
-    --heist-panel-2: #e2dddd;    
-    --heist-line: #c6c0ba;   
-    --heist-text: #3E3A36;      
-    --heist-muted: #5d544d;      
-    --heist-accent: #744A2B;  
-    --heist-rose: #806262;   
-    --heist-good: #3f6b52;   
-    --heist-bad: #9b3b2a;      
+    --heist-bg: #dcdad8;
+    --heist-panel: #efe9e9;
+    --heist-panel-2: #e2dddd;
+    --heist-line: #c6c0ba;
+    --heist-text: #3E3A36;
+    --heist-muted: #5d544d;
+    --heist-accent: #744A2B;
+    --heist-rose: #806262;
+    --heist-good: #3f6b52;
+    --heist-bad: #9b3b2a;
+    --heist-gold: #b1932a;        /*---same gold as the trophy favicon*/
+    --heist-gold-dark: #6b5615;   /*---darker gold for text so its still easy to read*/
     --heist-font: 'Lato', sans-serif;
     --heist-serif: 'Playfair Display', serif;
     --heist-mono: 'Lato', sans-serif;
@@ -39,25 +41,27 @@ a:hover {
     color: var(--heist-bad) !important;
 }
 
-/*---main button style used across the pages*/
+/*---main button style used across the pages, gold like the trophy
+----dark text instead of white because white on this gold is too hard to read
+----ref colour contrast checker https://webaim.org/resources/contrastchecker/ */
 .btn-heist {
     font-family: var(--heist-font);
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    background-color: var(--heist-accent);
-    color: #ffffff;
-    border: 1px solid var(--heist-accent);
+    background-color: var(--heist-gold);
+    color: #2b2420;
+    border: 1px solid var(--heist-gold);
     border-radius: 0;
     padding: 0.7rem 1.4rem;
     min-height: 44px;
 }
 
 .btn-heist:hover {
-    background-color: #5c3a22;
-    border-color: #5c3a22;
-    color: #ffffff;
+    background-color: #9c8125;
+    border-color: #9c8125;
+    color: #2b2420;
 }
 
 /*---outline version for secondary buttons*/
@@ -68,16 +72,16 @@ a:hover {
     letter-spacing: 0.1em;
     text-transform: uppercase;
     background-color: transparent;
-    color: var(--heist-accent);
-    border: 1px solid var(--heist-accent);
+    color: var(--heist-gold-dark);
+    border: 1px solid var(--heist-gold);
     border-radius: 0;
     padding: 0.7rem 1.4rem;
     min-height: 44px;
 }
 
 .btn-heist-outline:hover {
-    background-color: var(--heist-accent);
-    color: #ffffff;
+    background-color: var(--heist-gold);
+    color: #2b2420;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -110,9 +114,9 @@ h1:focus {
     color: white;
 }
 
-    .blazor-error-boundary::after {
-        content: "An error has occurred."
-    }
+.blazor-error-boundary::after {
+    content: "An error has occurred."
+}
 
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
@@ -288,11 +292,15 @@ h1:focus {
 }
 
 
+/*---3 columns on every page, wider than the rest of the site so the middle has room
+----same full width trick as the hero, but it stops at 1800px on very big screens */
 .page-layout {
     display: grid;
-    grid-template-columns: minmax(180px, 1fr) minmax(0, 3fr) minmax(260px, 1.3fr);
+    grid-template-columns: minmax(170px, 0.8fr) minmax(0, 4fr) minmax(250px, 1.1fr);
     gap: 2rem;
     align-items: start;
+    margin-left: calc(50% - min(900px, 50vw - 1.5rem));
+    margin-right: calc(50% - min(900px, 50vw - 1.5rem));
 }
 
 .side-col {
@@ -303,7 +311,7 @@ h1:focus {
 /*---medium screens: hide the steps panel*/
 @media (max-width: 1099.98px) {
     .page-layout {
-        grid-template-columns: minmax(0, 3fr) minmax(250px, 1.3fr);
+        grid-template-columns: minmax(0, 3fr) minmax(250px, 1.2fr);
     }
 
     .steps-col {
@@ -361,7 +369,6 @@ h1:focus {
     text-transform: uppercase;
     color: var(--heist-muted);
 }
-
 
 /*---simulate page painting with a dark red tint like alarm lights*/
 .hero-simulate {
