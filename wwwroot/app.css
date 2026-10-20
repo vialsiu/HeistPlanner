@@ -1,20 +1,25 @@
 
 :root {
-    --heist-bg: #dcdad8;
-    --heist-panel: #efe9e9;
-    --heist-panel-2: #e2dddd;
-    --heist-line: #c6c0ba;
-    --heist-text: #3E3A36;
-    --heist-muted: #5d544d;
-    --heist-accent: #744A2B;
-    --heist-rose: #806262;
-    --heist-good: #3f6b52;
-    --heist-bad: #9b3b2a;
-    --heist-gold: #b1932a;        /*---same gold as the trophy favicon*/
-    --heist-gold-dark: #6b5615;   /*---darker gold for text so its still easy to read*/
-    --heist-font: 'Lato', sans-serif;
-    --heist-serif: 'Playfair Display', serif;
-    --heist-mono: 'Lato', sans-serif;
+    /*---warm dark greys and beige with gold, like a gallery after closing time*/
+    --heist-bg: #1f1d1b;
+    --heist-header: #282522;      /*---top bar and footer*/
+    --heist-panel: #2b2825;
+    --heist-panel-2: #36322d;
+    --heist-line: #46413a;
+    --heist-line-strong: #59534b; /*---input borders and the dashed empty boxes*/
+    --heist-text: #ece4d6;
+    --heist-heading: #f6efe3;
+    --heist-muted: #b9ad9c;
+    --heist-accent: #d9b95a;      /*---links and small gold text*/
+    --heist-rose: #d9b95a;        /*---the little labels above panels, gold now too*/
+    --heist-good: #8fc59f;
+    --heist-bad: #e08a72;
+    --heist-gold: #c9a646;        /*---button gold*/
+    --heist-gold-text: #d9b95a;   /*---lighter gold for text so it reads on the dark background*/
+    --heist-on-gold: #1f1d1b;     /*---dark text on top of gold*/
+    --heist-font: 'Karla', sans-serif;
+    --heist-serif: 'Cormorant Garamond', serif;
+    --heist-mono: 'Karla', sans-serif;
 }
 
 html, body {
@@ -25,8 +30,8 @@ html, body {
 
 h1, h2, h3 {
     font-family: var(--heist-serif);
-    font-weight: 700;
-    color: var(--heist-text);
+    font-weight: 600;
+    color: var(--heist-heading);
 }
 
 a, .btn-link {
@@ -41,17 +46,17 @@ a:hover {
     color: var(--heist-bad) !important;
 }
 
-/*---main button style used across the pages, gold like the trophy
-----dark text instead of white because white on this gold is too hard to read
+/*---main button style used across the pages, gold with dark text
+----dark text instead of white because white on gold is too hard to read
 ----ref colour contrast checker https://webaim.org/resources/contrastchecker/ */
 .btn-heist {
     font-family: var(--heist-font);
     font-size: 0.8rem;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     background-color: var(--heist-gold);
-    color: #2b2420;
+    color: var(--heist-on-gold);
     border: 1px solid var(--heist-gold);
     border-radius: 0;
     padding: 0.7rem 1.4rem;
@@ -59,9 +64,9 @@ a:hover {
 }
 
 .btn-heist:hover {
-    background-color: #9c8125;
-    border-color: #9c8125;
-    color: #2b2420;
+    background-color: var(--heist-gold-text);
+    border-color: var(--heist-gold-text);
+    color: var(--heist-on-gold);
 }
 
 /*---outline version for secondary buttons*/
@@ -69,10 +74,10 @@ a:hover {
     font-family: var(--heist-font);
     font-size: 0.8rem;
     font-weight: 700;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     background-color: transparent;
-    color: var(--heist-gold-dark);
+    color: var(--heist-gold-text);
     border: 1px solid var(--heist-gold);
     border-radius: 0;
     padding: 0.7rem 1.4rem;
@@ -81,11 +86,11 @@ a:hover {
 
 .btn-heist-outline:hover {
     background-color: var(--heist-gold);
-    color: #2b2420;
+    color: var(--heist-on-gold);
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem var(--heist-rose);
+    box-shadow: 0 0 0 0.1rem var(--heist-bg), 0 0 0 0.25rem var(--heist-gold);
 }
 
 .content {
@@ -137,7 +142,7 @@ h1:focus {
     position: relative;
     overflow: hidden;
     margin: -7rem calc(50% - 50vw) 2.5rem;   /*---the -7rem pulls it up under the floating nav*/
-    background-color: #2b2420;
+    background-color: var(--heist-header);
     background-size: cover;
     background-position: center 30%;
     color: #ffffff;
@@ -155,51 +160,69 @@ h1:focus {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.42);
+    background: rgba(26, 23, 20, 0.6);   /*---warm grey tint so the white text stands out*/
 }
 
+/*---text in the middle of the painting*/
 .hero-content {
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
     bottom: 0;
-    max-width: 760px;
-    padding: 70px 24px 0 7%;
+    padding: 70px 24px 0;
     display: flex;
     flex-direction: column;
+    align-items: center;
     justify-content: center;
+    text-align: center;
 }
 
 .hero-eyebrow {
-    margin: 0 0 0.75rem;
-    font-size: 1rem;
-    letter-spacing: 0.22em;
+    margin: 0 0 1rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.32em;
     text-transform: uppercase;
-    opacity: 0.85;
+    color: var(--heist-gold-text);
 }
 
 .hero h1 {
     margin: 0;
-    color: #ffffff;
+    color: var(--heist-heading);
     font-size: 5.5rem;
-    line-height: 1.02;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+    font-weight: 600;
+    line-height: 0.95;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/*---the titles have <br/> in them, hiding them puts the title on one line*/
+.hero h1 br {
+    display: none;
+}
+
+/*---short gold line under the title*/
+.hero h1::after {
+    content: "";
+    display: block;
+    width: 64px;
+    height: 1px;
+    margin: 1.4rem auto 0;
+    background: var(--heist-gold);
 }
 
 .hero-link {
-    margin-top: 1.1rem;
-    color: #ffffff;
-    font-size: 1.2rem;
-    text-decoration: underline;
+    margin-top: 1.4rem;
+    color: #ddd3c4;
+    font-size: 1.05rem;
+    text-decoration: none;
 }
 
 .hero-link:hover {
-    color: #ffffff;
-    opacity: 0.8;
+    color: var(--heist-heading);
 }
 
 /*---slideshow: a strip 4 paintings tall (1, 2, 3, then 1 again) that moves up one painting at a time
----each painting stays for about 3 seconds then scrolls, 3 x 3.5s = 10.5s loop*/
+---each painting stays for about 14 seconds then scrolls, 3 x 15s = 45s loop*/
 .slide-track {
     position: absolute;
     top: 0;
@@ -237,40 +260,9 @@ h1:focus {
     100%            { transform: translateY(-75%); }
 }
 
-/*---dots on the right, each one fills in while its painting is showing*/
-.hero-dots {
-    position: absolute;
-    right: 22px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.dot {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    border: 1px solid #ffffff;
-    animation: heist-dot 10.5s infinite;
-}
-
-.dot-1 { animation-delay: 0s; }
-.dot-2 { animation-delay: 15s; }
-.dot-3 { animation-delay: 30s; }
-
-@keyframes heist-dot {
-    0%     { background: #ffffff; }
-    32%    { background: #ffffff; }
-    33.33% { background: transparent; }
-    99%    { background: transparent; }
-    100%   { background: #ffffff; }
-}
-
 /*----ref prefers-reduced-motion, if someone turned off animations on their computer the strip stays still on the first painting - https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
-    .slide-track, .dot {
+    .slide-track {
         animation: none;
     }
 }
@@ -336,13 +328,13 @@ h1:focus {
 }
 
 
-/*---night page painting with a dark blue tint so it feels like night time*/
+/*---night page painting, a bit darker than the others*/
 .hero-night {
     background-image: url('images/hero-2.jpg');
 }
 
 .hero-night .hero-overlay {
-    background: rgba(14, 18, 38, 0.62);
+    background: rgba(26, 23, 20, 0.66);
 }
 
 /*---section heading with a line under it, used on the night page*/
@@ -352,7 +344,7 @@ h1:focus {
     justify-content: space-between;
     align-items: baseline;
     gap: 0.6rem 1rem;
-    border-bottom: 1px solid #b9b0a8;
+    border-bottom: 1px solid var(--heist-line);
     padding-bottom: 0.6rem;
     margin: 0 0 1.25rem;
 }
@@ -370,11 +362,11 @@ h1:focus {
     color: var(--heist-muted);
 }
 
-/*---simulate page painting with a dark red tint like alarm lights*/
+/*---simulate page painting, a bit darker than the others*/
 .hero-simulate {
     background-image: url('images/hero-3.jpg');
 }
 
 .hero-simulate .hero-overlay {
-    background: rgba(45, 12, 8, 0.58);
+    background: rgba(26, 23, 20, 0.66);
 }
