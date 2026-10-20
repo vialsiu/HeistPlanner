@@ -5,14 +5,7 @@
 <PageTitle>Crew - Heist Planner</PageTitle>
 
 @* ---painting band at the top, same as the targets page (styles in app.css) *@
-<section class="hero hero-tall hero-crew">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-        <p class="hero-eyebrow">Recruitment</p>
-        <h1>Assemble<br/>the<br/>Crew</h1>
-        <a href="#crew" class="hero-link">Five roles, one specialist each</a>
-    </div>
-</section>
+<PageHero PaintingClass="hero-crew" Eyebrow="Recruitment" Title="Assemble the Crew" LinkTarget="#crew" LinkText="Five roles, one specialist each"/>
 
 @* ---3 columns: steps on the left, crew and candidates in the middle, payroll on the right *@
 <div class="page-layout">
@@ -159,8 +152,8 @@
                 <strong>@(100 - Plan.GetTotalCutPercentage())%</strong>
             </div>
 
-            <a href="" class="btn-heist-outline next-link">← Back to the targets</a>
-        </div>
+            <a href="night" class="btn-heist next-link">Next: choose the night</a>
+            </div>
     </aside>
 
 </div>

@@ -5,7 +5,7 @@
     justify-content: space-between;
     align-items: baseline;
     gap: 0.6rem 1rem;
-    border-bottom: 1px solid #b9b0a8;
+    border-bottom: 1px solid var(--heist-line);
     padding-bottom: 0.6rem;
     margin: 0 0 1.25rem;
 }
@@ -50,7 +50,7 @@
 }
 
 .crew-card.empty {
-    border: 1px dashed #a89e96;
+    border: 1px dashed var(--heist-line-strong);
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -101,12 +101,12 @@
 
 .skill-bar {
     height: 3px;
-    background: #d4ccc5;
+    background: var(--heist-line);
 }
 
 .skill-bar div {
     height: 100%;
-    background: var(--heist-accent);
+    background: var(--heist-gold);
 }
 
 .perk {
@@ -144,8 +144,8 @@
     font-size: 0.95rem;
     padding: 0.55rem 0.7rem;
     min-height: 44px;
-    background: #f4f1ee;
-    border: 1px solid #9e958d;
+    background: var(--heist-panel);
+    border: 1px solid var(--heist-line-strong);
     color: var(--heist-text);
 }
 
@@ -181,7 +181,7 @@
 
 .candidates td {
     padding: 0.7rem 1.1rem;
-    border-top: 1px solid #d4ccc5;
+    border-top: 1px solid var(--heist-line);
     vertical-align: middle;
 }
 

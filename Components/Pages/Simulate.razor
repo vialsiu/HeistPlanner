@@ -3,15 +3,8 @@
 
 <PageTitle>Simulate - Heist Planner</PageTitle>
 
-@* ---painting band with a red tint like alarm lights (styles in app.css) *@
-<section class="hero hero-tall hero-simulate">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-        <p class="hero-eyebrow">@Museum.NAME · Cleveland, Ohio</p>
-        <h1>Run<br/>the<br/>Heist</h1>
-        <a href="#simulate" class="hero-link">The odds, the roll and the night itself</a>
-    </div>
-</section>
+@* ---painting band a bit darker than the others (styles in app.css) *@
+<PageHero PaintingClass="hero-simulate" Eyebrow="@($"{Museum.NAME} · Cleveland, Ohio")" Title="Run the Heist" LinkTarget="#simulate" LinkText="The odds, the roll and the night itself"/>
 
 @* ---the factors and chance get worked out again every time the page draws, so they always match the plan *@
 @{
@@ -145,7 +138,6 @@
                 @(result == null ? "Run the heist" : "Run it again")
             </button>
 
-            <a href="night" class="btn-heist-outline next-link">← Back to the night</a>
         </div>
     </aside>
 

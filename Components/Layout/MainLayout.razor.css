@@ -16,8 +16,9 @@ main {
 }
 
 .site-footer {
-    background-color: #ded6d1;
-    color: #4A403A;
+    background-color: var(--heist-header);
+    color: var(--heist-text);
+    border-top: 1px solid var(--heist-line);
     padding: 2.25rem 1.5rem 1.5rem;
 }
 
@@ -43,7 +44,7 @@ main {
 .footer-bottom {
     max-width: 1200px;
     margin: 1.5rem auto 0 !important;
-    border-top: 1px solid #786e66;
+    border-top: 1px solid var(--heist-line);
     padding-top: 0.9rem;
     text-align: center;
     font-size: 0.8rem !important;

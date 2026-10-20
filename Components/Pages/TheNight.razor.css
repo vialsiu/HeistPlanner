@@ -25,9 +25,10 @@
     font-size: 1rem;
     padding: 0.6rem 0.8rem;
     min-height: 44px;
-    background: #f4f1ee;
-    border: 1px solid #9e958d;
+    background: var(--heist-panel);
+    border: 1px solid var(--heist-line-strong);
     color: var(--heist-text);
+    color-scheme: dark;     /*---makes the date picker popup dark too*/
 }
 
 .empty-text {
@@ -72,14 +73,14 @@
 .timeline {
     position: relative;
     height: 14px;
-    background: #e7d9c4;          /*---dusk and dawn colour*/
+    background: #6b5a44;          /*---dusk and dawn colour*/
 }
 
 .timeline-dark {
     position: absolute;
     top: 0;
     bottom: 0;
-    background: #262a40;          /*---full darkness*/
+    background: #14151a;          /*---full darkness*/
 }
 
 .timeline-go {
@@ -179,7 +180,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    color: #ffffff;
+    color: var(--heist-on-gold);
     font-size: 0.85rem;
     flex: none;
 }

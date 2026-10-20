@@ -20,8 +20,8 @@
     font-family: var(--heist-font);
     font-size: 1.05rem;
     padding: 0.7rem 0.9rem;
-    background: #f4f1ee;
-    border: 1px solid #9e958d;
+    background: var(--heist-panel);
+    border: 1px solid var(--heist-line-strong);
     color: var(--heist-text);
 }
 
@@ -31,7 +31,7 @@
     justify-content: space-between;
     align-items: baseline;
     gap: 0.4rem 1rem;
-    border-bottom: 1px solid #b9b0a8;
+    border-bottom: 1px solid var(--heist-line);
     padding-bottom: 0.6rem;
     margin: 2rem 0 1.25rem;
 }
@@ -120,7 +120,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(30, 22, 18, 0.55);
+    background: rgba(26, 23, 20, 0.6);
     color: #ffffff;
     font-size: 0.8rem;
     font-weight: 700;
@@ -141,7 +141,7 @@
 
 /*---already on the list: brown frame and a little label in the corner*/
 .chosen .card-image {
-    box-shadow: 0 0 0 3px var(--heist-accent), 0 4px 10px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 0 0 3px var(--heist-gold), 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .card-badge {
@@ -149,8 +149,8 @@
     top: 0.75rem;
     left: 0.75rem;
     padding: 0.3rem 0.6rem;
-    background: var(--heist-accent);
-    color: #ffffff;
+    background: var(--heist-gold);
+    color: var(--heist-on-gold);
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 0.1em;
@@ -278,7 +278,7 @@
 }
 
 .ledger li.empty-slot {
-    border: 1px dashed #a89e96;
+    border: 1px dashed var(--heist-line-strong);
     padding: 0.9rem;
     justify-content: center;
     color: var(--heist-muted);
@@ -300,6 +300,6 @@
 }
 
 
-    .list-col {
-        position: static;
-    }
+.list-col {
+    position: static;
+}
