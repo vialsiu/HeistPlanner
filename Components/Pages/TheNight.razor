@@ -4,15 +4,8 @@
 
 <PageTitle>The Night - Heist Planner</PageTitle>
 
-@* ---painting band with a night tint (styles in app.css) *@
-<section class="hero hero-tall hero-night">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-        <p class="hero-eyebrow">@Museum.NAME · Cleveland, Ohio</p>
-        <h1>Choose<br/>the<br/>Night</h1>
-        <a href="#night" class="hero-link">Darkness, moonlight and weather</a>
-    </div>
-</section>
+@* ---painting band a bit darker than the others (styles in app.css) *@
+<PageHero PaintingClass="hero-night" Eyebrow="@($"{Museum.NAME} · Cleveland, Ohio")" Title="Choose the Night" LinkTarget="#night" LinkText="Darkness, moonlight and weather"/>
 
 @* ---3 columns: steps on the left, the night in the middle, the verdict on the right *@
 <div class="page-layout">
@@ -145,8 +138,8 @@
                 <p class="verdict-date">No night checked yet</p>
             }
 
-            <a href="crew" class="btn-heist-outline next-link">← Back to the crew</a>
-        </div>
+            <a href="simulate" class="btn-heist next-link">Next: run the heist</a>
+            </div>
     </aside>
 
 </div>
