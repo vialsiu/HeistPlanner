@@ -1,9 +1,13 @@
 ﻿# The Heist Planner
+ 
+<img width="1895" height="861" alt="heistplan" src="https://github.com/user-attachments/assets/adf212cc-a64a-4de4-9a8a-e6f7346665ad" />
 
-A Blazor web app for planning a (fictional) art heist. Scout real artworks,
+- A Blazor web app for planning a (fictional) art heist. 
+
+- Scout real artworks,
 recruit a crew, check the darkness and weather on the night, then run the job.
 
-SD4 Service Oriented Architecture: CA1, DkIT 2026/27
+- SD4 Service Oriented Architecture: CA1, DkIT
 D00265675
 ## Web services used
 - [Cleveland Museum of Art Open Access API](https://openaccess-api.clevelandart.org/): artworks and images
