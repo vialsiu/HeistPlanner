@@ -3,16 +3,14 @@
 
 <PageTitle>Simulate - Heist Planner</PageTitle>
 
-@* ---painting band a bit darker than the others (styles in app.css) *@
 <PageHero PaintingClass="hero-simulate" Eyebrow="@($"{Museum.NAME} · Cleveland, Ohio")" Title="Run the Heist" LinkTarget="#simulate" LinkText="The odds, the roll and the night itself"/>
 
-@* ---the factors and chance get worked out again every time the page draws, so they always match the plan *@
+@* -------the factors and chance get worked out again every time the page draws, so they always match the plan *@
 @{
     List<Factor> factors = SuccessCalculator.GetFactors(Plan);
     double chance = SuccessCalculator.GetChance(factors);
 }
 
-@* ---3 columns: steps on the left, the odds and the night in the middle, the plan summary on the right *@
 <div class="page-layout">
 
     <aside class="side-col steps-col">
@@ -34,7 +32,7 @@
                 <p class="section-count">Biggest effect first</p>
             </div>
 
-            @* ---one bar per factor, green helps and red hurts, the longest bar is the biggest effect *@
+            @* ------one bar per factor, green helps and red hurts, the longest bar is the biggest effect *@
             <ul class="factor-list">
                 @foreach (Factor factor in factors)
                 {
@@ -66,9 +64,9 @@
                     <p>@(result.Success ? "The roll came in under the chance." : "The roll went over the chance.")</p>
                 </div>
 
-                @* ---timeline on the left and the loot on the right, if they got caught the timeline takes the whole width *@
+                @* ------timeline on the left and the loot on the right, if they got caught the timeline takes the whole width *@
                 <div class="result-grid">
-                    @* ---the story of the night, already sorted by time in HeistSimulator *@
+                    @* ------the story of the night, already sorted by time in HeistSimulator *@
                     <ol class="story">
                         @foreach (TimelineEvent step in result.Timeline)
                         {
@@ -79,7 +77,7 @@
                         }
                     </ol>
 
-                    @* ----no loot if they got caught *@
+                    @* ---------no loot if they got caught *@
                     @if (result.Success)
                     {
                         <div class="loot">
@@ -110,7 +108,6 @@
         }
     </section>
 
-    @* ---right column: quick look at the whole plan and the big button *@
     <aside class="side-col">
         <div class="summary">
             <p class="summary-eyebrow">The plan</p>
@@ -147,14 +144,13 @@
     private HeistResult? result;
     private string? errorMessage;
 
-    //----ref Enum.GetValues gives every value in the enum so this stays right if a role is ever added https://learn.microsoft.com/en-us/dotnet/api/system.enum.getvalues
+    //------ref Enum.GetValues gives every value in the enum so this stays right if a role is ever added https://learn.microsoft.com/en-us/dotnet/api/system.enum.getvalues
     private int roleCount = Enum.GetValues<CrewRole>().Length;
 
     private void RunHeist()
     {
         errorMessage = null;
 
-        //---the button is disabled with no targets but check again anyway
         if (Plan.Targets.Count == 0)
         {
             errorMessage = "Pick at least one target first.";
@@ -163,7 +159,6 @@
 
         try
         {
-            //---the page rolls the dice and passes the number in, so the tests can pass in their own
             int roll = HeistSimulator.RollDice();
             result = HeistSimulator.Run(Plan, roll, DateTime.Now);
         }
@@ -173,7 +168,7 @@
         }
     }
 
-    //---bar length compared to the biggest factor (the list is sorted so thats always the first one)
+    //-----bar length compared to the biggest factor (the list is sorted so thats always the first one)
     private int GetBarWidth(Factor factor, Factor biggest)
     {
         if (biggest.Effect == 0)
