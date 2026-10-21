@@ -1,10 +1,10 @@
 ﻿namespace HeistPlanner.Models
 {
-    //---one thing that changes the chance of success, e.g. Ana Ruiz (Hacker) +10
+    //----one thing that changes the chance of success, e.g. Ana Ruiz (Hacker) +10
     public class Factor : IComparable<Factor>
     {
         private string label;
-        private double effect;      //---percentage points, can be negative
+        private double effect;      //----percentage points, can be negative
 
         public string Label
         {
@@ -37,7 +37,7 @@
 
         public override string ToString()
         {
-            //---+10 or -8, the + is added by hand because positive numbers dont show one
+            //--- +10 or -8, the + is added by hand because positive numbers dont show one
             string sign = effect >= 0 ? "+" : "";
             return $"{label} {sign}{effect}";
         }

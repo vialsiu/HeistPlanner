@@ -57,7 +57,7 @@
         //-----each hired person adds their own bonus (Hacker, InsideMan etc override it), each empty role costs points
         private static void AddCrewFactors(HeistPlan plan, List<Factor> factors)
         {
-            //-----ref Enum.GetValues to loop through all 5 roles - https://learn.microsoft.com/en-us/dotnet/api/system.enum.getvalues
+            //-----ref Enum.GetValues to loop through all 5 roles  https://learn.microsoft.com/en-us/dotnet/api/system.enum.getvalues
             foreach (CrewRole role in Enum.GetValues<CrewRole>())
             {
                 CrewMember? member = plan.GetCrewMember(role);

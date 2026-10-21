@@ -216,8 +216,7 @@ h1:focus {
     color: var(--heist-heading);
 }
 
-/*---slideshow: a strip 4 paintings tall (1, 2, 3, then 1 again) that moves up one painting at a time
----each painting stays for about 14 seconds then scrolls, 3 x 15s = 45s loop*/
+/*-------------- the slideshow from pagehero */
 .slide-track {
     position: absolute;
     top: 0;
@@ -254,14 +253,15 @@ h1:focus {
     100%            { transform: translateY(-75%); }
 }
 
-/*----ref prefers-reduced-motion, if someone turned off animations on their computer the strip stays still on the first painting - https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion */
+/*----if someone turned off animations on their computer the strip stays still on the first painting
+ https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
     .slide-track {
         animation: none;
     }
 }
 
-/*---smaller screens*/
+/*-----smaller screens*/
 @media (max-width: 767.98px) {
     .hero-tall {
         height: 520px;
@@ -278,7 +278,7 @@ h1:focus {
 }
 
 
-/*---3 columns on every page, wider than the rest of the site so the middle has room
+/*-----3 columns on every page, wider than the rest of the site so the middle has room
 ----same full width trick as the hero, but it stops at 1800px on very big screens */
 .page-layout {
     display: grid;
@@ -356,7 +356,6 @@ h1:focus {
     color: var(--heist-muted);
 }
 
-/*---simulate page painting, a bit darker than the others*/
 .hero-simulate {
     background-image: url('images/hero-3.jpg');
 }

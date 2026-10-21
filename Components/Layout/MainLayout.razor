@@ -41,13 +41,13 @@
         Navigation.LocationChanged += OnLocationChanged;
     }
 
-    //---only when you switch pages, so the very first time the site opens you still see the big painting
+    //-------only when you switch pages, so the very first time the site opens you still see the big painting
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         switchedPage = true;
     }
 
-    //---waits until the new page is drawn, otherwise the painting band isnt there yet to scroll past
+    //-------waits until the new page is drawn, otherwise the painting band isnt there yet to scroll past
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (switchedPage)
@@ -57,7 +57,7 @@
         }
     }
 
-    //---stop listening when the layout is gone so it doesnt leak
+    //------stop listening when the layout is gone so it doesnt leak
     public void Dispose()
     {
         Navigation.LocationChanged -= OnLocationChanged;

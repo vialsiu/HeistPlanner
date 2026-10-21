@@ -39,13 +39,12 @@
             return "$" + amount.ToString("N0");
         }
 
-        //---e.g. 45% of 1,000,000 = 450,000
         public static decimal GetCrewCut(decimal lootValue, decimal cutPercentage)
         {
             return lootValue * cutPercentage / 100m;
         }
 
-        //----roll at or under the chance = success, e.g. chance 63 and roll 41 gets away
+        //-----roll at or under the chance = success, e.g. chance 63 and roll 41 gets away
         public static HeistResult Run(HeistPlan plan, int roll, DateTime ranAt)
         {
             double chance = SuccessCalculator.GetChance(SuccessCalculator.GetFactors(plan));

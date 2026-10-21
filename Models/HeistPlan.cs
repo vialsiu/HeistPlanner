@@ -5,7 +5,7 @@
         public static readonly int MAX_TARGETS = 3;
         private List<Artwork> targets = new List<Artwork>();
 
-        //----ref Dictionary, like a list but every item has a key and a key can only be in there once https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2
+        //----ref Dictionary https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2
         //---the key is the role so theres only ever one person per role
         private Dictionary<CrewRole, CrewMember> crew = new Dictionary<CrewRole, CrewMember>();
 

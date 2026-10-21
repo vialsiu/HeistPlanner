@@ -5,7 +5,7 @@ namespace HeistPlanner.Models
     //-- for Cleveland Museum of Art JSON
     public class ArtworkCreator
     {
-        public string? description { get; set; }   //e.g. Claude Monet (French, 1840–1926)
+        public string? description { get; set; } 
     }
 
     public class ArtworkImages
@@ -75,7 +75,7 @@ namespace HeistPlanner.Models
                     return "Unknown artist";
                 }
 
-                //--the API gives Claude Monet (French, 1840–1926), keep just the name before the bracket
+                //--the API gives exactly like 'Claude Monet (French, 1840–1926)' I need only tp keep just the name before the bracket
                 string description = creators[0].description!;
                 int bracket = description.IndexOf("(");
                 return bracket > 0 ? description.Substring(0, bracket).Trim() : description;
@@ -126,7 +126,7 @@ namespace HeistPlanner.Models
 
         //--Ref: Microsoft guidelines for overloading == safely, https://learn.microsoft.com/en-us/previous-versions/ms173147(v=vs.90)
         //need this so == compares artworks by id instead of by memory reference, and so it doesn't crash
-        //--when the left side is null - e.g. checking if an artwork is already on the target list
+        //--when the left side is null for example checking if an artwork is already on the target list
         public static bool operator ==(Artwork? left, Artwork? right)
         {
             if (left is null) return right is null;
